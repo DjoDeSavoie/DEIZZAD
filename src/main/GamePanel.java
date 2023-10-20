@@ -20,6 +20,8 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		mouseInputs = new MouseInputs(this);
 		importImage();
+		//loadAnimation();
+
 		addKeyListener(new KeyboardInputs(this));
 		addMouseListener(mouseInputs);
 		addMouseMotionListener(mouseInputs);
