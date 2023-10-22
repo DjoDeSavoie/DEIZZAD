@@ -118,9 +118,9 @@ public class GamePanel extends JPanel {
 	}
 
 	public void updateGame(){
-		//updateAnimation();
-		//setAnimation();
-		//updatePos();
+		updateAnimation();
+		setAnimation();
+		updatePosition();
 	}
 
 }
