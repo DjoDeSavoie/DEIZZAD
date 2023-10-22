@@ -16,11 +16,13 @@ public class GamePanel extends JPanel {
 	private float xDelta = 100, yDelta = 100;
 	private float xDir = 0.003f, yDir = 0.003f;
 	private BufferedImage image, img;
+	private BufferedImage[] Idle_anim;
+	private int anim_tick, anim_index, anim_speed = 30;
 
 	public GamePanel() {
 		mouseInputs = new MouseInputs(this);
 		importImage();
-		//loadAnimation();
+		loadAnimation();
 
 		addKeyListener(new KeyboardInputs(this));
 		addMouseListener(mouseInputs);
@@ -32,8 +34,20 @@ public class GamePanel extends JPanel {
 		try {
 			image = ImageIO.read(stream);
 		} catch (IOException e) {
-			System.out.print("bonjour");
 			e.printStackTrace();
+		} finally {
+			try{
+				stream.close();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void loadAnimation(){
+		Idle_anim = new BufferedImage[6];
+		for(int i = 0; i < Idle_anim.length; i++){
+			Idle_anim[i] = image.getSubimage(i*100, 0, 100, 100);
 		}
 	}
 
@@ -50,23 +64,25 @@ public class GamePanel extends JPanel {
 		this.yDelta = y;
 	}
 
+	private void updateAnimation(){
+		anim_tick++;
+		if(anim_tick >= anim_speed){
+			anim_tick = 0;
+			anim_index++;
+			if(anim_index >= Idle_anim.length){
+				anim_index = 0;
+			}
+		}
+	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		updateImage();
-		img = image.getSubimage(6*60, 7*100, 100, 100);
-		g.drawImage(img, (int)xDelta, (int)yDelta, null);
-	}
-	public void updateImage(){
-		xDelta += xDir;
-		if(xDelta >= 1400 || xDelta <= 0){
-			xDir *= -1;
-		}
 
-		yDelta += yDir;
-		if(yDelta >= 1400 || yDelta <= 0){
-			yDir *= -1;
-		}
+		img = image.getSubimage(6*60, 7*100, 100, 100);
+		g.drawImage(img, xDelta, yDelta, null);
 		
+		//g.fillRect(xDelta, yDelta, 200, 50);
+
 	}
 
 }
