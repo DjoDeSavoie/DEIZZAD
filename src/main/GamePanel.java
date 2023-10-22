@@ -16,7 +16,7 @@ public class GamePanel extends JPanel {
 	private float xDelta = 100, yDelta = 100;
 	private float xDir = 0.003f, yDir = 0.003f;
 	private BufferedImage image, img;
-	private BufferedImage[] Idle_anim;
+	private BufferedImage[][] animations;
 	private int anim_tick, anim_index, anim_speed = 30;
 
 	public GamePanel() {
@@ -45,9 +45,11 @@ public class GamePanel extends JPanel {
 	}
 
 	private void loadAnimation(){
-		Idle_anim = new BufferedImage[6];
-		for(int i = 0; i < Idle_anim.length; i++){
-			Idle_anim[i] = image.getSubimage(i*100, 0, 100, 100);
+		animations = new BufferedImage[10][8];
+		for(int i = 0; i < animations.length; i++){
+			for(int j = 0; j < animations[i].length; j++){
+				animations[i][j] = image.getSubimage(j*60, i*100, 60, 100);
+			}
 		}
 	}
 
@@ -65,21 +67,22 @@ public class GamePanel extends JPanel {
 	}
 
 	private void updateAnimation(){
-		anim_tick++;
-		if(anim_tick >= anim_speed){
-			anim_tick = 0;
-			anim_index++;
-			if(anim_index >= Idle_anim.length){
-				anim_index = 0;
-			}
-		}
+		// anim_tick++;
+		// if(anim_tick >= anim_speed){
+		// 	anim_tick = 0;
+		// 	anim_index++;
+		// 	if(anim_index >= Idle_anim.length){
+		// 		anim_index = 0;
+		// 	}
+		// }
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		img = image.getSubimage(6*60, 7*100, 100, 100);
-		g.drawImage(img, (int)xDelta, (int)yDelta, null);
+		// img = image.getSubimage(6*60, 7*100, 100, 100);
+		updateAnimation();
+		g.drawImage(animations[1][1], (int) xDelta, (int) yDelta, null);
 		
 		//g.fillRect(xDelta, yDelta, 200, 50);
 
