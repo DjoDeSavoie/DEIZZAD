@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.Buffer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -14,7 +13,8 @@ import inputs.MouseInputs;
 public class GamePanel extends JPanel {
 
 	private MouseInputs mouseInputs;
-	private int xDelta = 100, yDelta = 100;
+	private float xDelta = 100, yDelta = 100;
+	private float xDir = 0.003f, yDir = 0.003f;
 	private BufferedImage image, img;
 
 	public GamePanel() {
@@ -39,28 +39,34 @@ public class GamePanel extends JPanel {
 
 	public void changeXDelta(int value) {
 		this.xDelta += value;
-		repaint();
 	}
 
 	public void changeYDelta(int value) {
 		this.yDelta += value;
-		repaint();
 	}
 	
 	public void setRectPos(int x, int y) {
 		this.xDelta = x;
 		this.yDelta = y;
-		repaint();
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+		updateImage();
 		img = image.getSubimage(6*60, 7*100, 100, 100);
-		g.drawImage(img, xDelta, yDelta, null);
-		
-		//g.fillRect(xDelta, yDelta, 200, 50);
+		g.drawImage(img, (int)xDelta, (int)yDelta, null);
+	}
+	public void updateImage(){
+		xDelta += xDir;
+		if(xDelta >= 1400 || xDelta <= 0){
+			xDir *= -1;
+		}
 
+		yDelta += yDir;
+		if(yDelta >= 1400 || yDelta <= 0){
+			yDir *= -1;
+		}
+		
 	}
 
 }
