@@ -79,7 +79,7 @@ public class GamePanel extends JPanel {
 		super.paintComponent(g);
 
 		img = image.getSubimage(6*60, 7*100, 100, 100);
-		g.drawImage(img, xDelta, yDelta, null);
+		g.drawImage(img, (int)xDelta, (int)yDelta, null);
 		
 		//g.fillRect(xDelta, yDelta, 200, 50);
 
