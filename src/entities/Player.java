@@ -20,6 +20,8 @@ import java.awt.Graphics;
 
 import javax.imageio.ImageIO;
 
+import utilz.LoadSave;
+
 //création de la classe Player fille de la classe Entity
 public class Player extends Entity {
     private BufferedImage[][] animations;
@@ -109,26 +111,15 @@ public class Player extends Entity {
 
 
     private void loadAnimation() {
-        InputStream stream = getClass().getResourceAsStream("../data/player_sprites.png");
-        try {
-            BufferedImage img = ImageIO.read(stream);
+        
+            BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
             animations = new BufferedImage[9][8];
             for (int i = 0; i < animations.length; i++)
                 for (int j = 0; j < animations[i].length; j++)
                     animations[i][j] = img.getSubimage(j * 96, i * 96, 96, 96);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-
-    }
 
     //permet de réinitialiser les variables booléennes de direction
     //Dans le ccas par exemple où l'on quitte la fenetre de jeu pendant que le perso se déplace
