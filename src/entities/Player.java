@@ -9,6 +9,7 @@ import static utilz.Constants.PlayerConstants.IDLE;
 import static utilz.Constants.PlayerConstants.WALKING;
 import static utilz.Constants.PlayerConstants.RUNNING;
 import static utilz.Constants.PlayerConstants.ATTACK_1;
+import static utilz.Constants.PlayerConstants.ATTACK_3;
 
 
 
@@ -68,7 +69,7 @@ public class Player extends Entity {
 
 
         if(attacking)
-            playerAction = ATTACK_1;
+            playerAction = ATTACK_3;
 
         if(startAni != playerAction)
             resetAniTick();
@@ -115,7 +116,7 @@ public class Player extends Entity {
             animations = new BufferedImage[9][8];
             for (int i = 0; i < animations.length; i++)
                 for (int j = 0; j < animations[i].length; j++)
-                    animations[i][j] = img.getSubimage(j * 96, i * 100, 96, 100);
+                    animations[i][j] = img.getSubimage(j * 96, i * 96, 96, 96);
 
         } catch (IOException e) {
             e.printStackTrace();
