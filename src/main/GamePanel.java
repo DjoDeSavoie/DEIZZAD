@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,11 +21,19 @@ public class GamePanel extends JPanel {
 	public GamePanel(Game game) {
 		mouseInputs = new MouseInputs(this);
 		this.game = game;
-
+		setPanelSize();
 		addKeyListener(new KeyboardInputs(this));
 		addMouseListener(mouseInputs);
 		addMouseMotionListener(mouseInputs);
 	}
+
+	private void setPanelSize(){
+		Dimension size = new Dimension(1280, 800);
+		setMinimumSize(size);
+		setPreferredSize(size);
+		setMaximumSize(size);
+	}
+
 
 	public void updateGame(){
 
