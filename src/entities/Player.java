@@ -1,24 +1,18 @@
 package entities;
 
-import static utilz.Constants.Directions.DOWN;
-import static utilz.Constants.Directions.LEFT;
-import static utilz.Constants.Directions.RIGHT;
-import static utilz.Constants.Directions.UP;
 import static utilz.Constants.PlayerConstants.GetSpriteAmount;
 import static utilz.Constants.PlayerConstants.IDLE;
 import static utilz.Constants.PlayerConstants.WALKING;
-import static utilz.Constants.PlayerConstants.RUNNING;
-import static utilz.Constants.PlayerConstants.ATTACK_1;
 import static utilz.Constants.PlayerConstants.ATTACK_3;
+import static utilz.HelpMethods.CanMoveHere;
 
 
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.awt.Graphics;
 
-import javax.imageio.ImageIO;
+import main.Game;
+
+import java.awt.Graphics;
 
 import utilz.LoadSave;
 
@@ -30,11 +24,15 @@ public class Player extends Entity {
     private boolean moving = false, attacking = false;
 	private boolean left, up, right, down;
     private float playerSpeed = 2.0f;
+    private int[][] levelData;
+    private float xDrawOffset = 21 * Game.SCALE;
+    private float yDrawOffset = 21 * Game.SCALE;
     
 
-    public Player(float x, float y) {
-        super(x, y); // x et y définit dans la classe Entity
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height); // x et y définit dans la classe Entity
         loadAnimation();
+        initHitbox(x, y, 20 * Game.SCALE, 19 * Game.SCALE);
 
     }
 
@@ -46,7 +44,8 @@ public class Player extends Entity {
     }
 
     public void render(Graphics g) {
-		g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 200, 200, null);
+		g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x-xDrawOffset), (int)(hitbox.y-yDrawOffset), width, height, null);
+        drawHitbox(g);
     }
 
 	private void updateAnimationTick(){
@@ -88,22 +87,28 @@ public class Player extends Entity {
     private void updatePos(){
 
         moving = false;
+        if(!left && !up && !right && !down)
+            return;
 		
-        if(left && !right){
-            x -= playerSpeed;
-            moving = true;
-        } else if(right && !left){
-            x += playerSpeed;
+        float xSpeed = 0, ySpeed = 0;
+
+        if(left && !right)
+            xSpeed = -playerSpeed;
+        else if(right && !left)
+            xSpeed = playerSpeed;
+
+        if(up && !down) 
+            ySpeed = -playerSpeed;
+           
+        else if(down && !up) 
+            ySpeed = playerSpeed;
+
+        if(CanMoveHere(hitbox.x+xSpeed, hitbox.y+ySpeed, hitbox.width, hitbox.height, levelData)){
+            hitbox.x += xSpeed;
+            hitbox.y += ySpeed;
             moving = true;
         }
 
-        if(up && !down) {
-            y -= playerSpeed;
-            moving = true;
-        } else if(down && !up) {
-            y += playerSpeed;
-            moving = true;
-        }
 
 	}
 
@@ -128,6 +133,10 @@ public class Player extends Entity {
         up = false;
         right = false;
         down = false;
+    }
+
+    public void loadlevelData(int[][] levelData) {
+        this.levelData = levelData;
     }
 
     //Setters de variable d'attaque
