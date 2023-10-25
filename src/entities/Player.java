@@ -25,14 +25,14 @@ public class Player extends Entity {
 	private boolean left, up, right, down;
     private float playerSpeed = 2.0f;
     private int[][] levelData;
-    private float xDrawOffset = 21 * Game.SCALE;
-    private float yDrawOffset = 21 * Game.SCALE;
+    private float xDrawOffset = 25 * Game.SCALE;
+    private float yDrawOffset = 40 * Game.SCALE;
     
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height); // x et y définit dans la classe Entity
         loadAnimation();
-        initHitbox(x, y, 20 * Game.SCALE, 19 * Game.SCALE);
+        initHitbox(x, y, 25 * Game.SCALE, 40 * Game.SCALE);
 
     }
 
