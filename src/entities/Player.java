@@ -19,11 +19,11 @@ import utilz.LoadSave;
 //création de la classe Player fille de la classe Entity
 public class Player extends Entity {
     private BufferedImage[][] animations;
-	private int aniTick, aniIndex, aniSpeed = 15;
+	private int aniTick, aniIndex, aniSpeed = 25;
 	private int playerAction = IDLE;
     private boolean moving = false, attacking = false;
 	private boolean left, up, right, down;
-    private float playerSpeed = 2.0f;
+    private float playerSpeed = 1.0f;
     private int[][] levelData;
     private float xDrawOffset = 25 * Game.SCALE;
     private float yDrawOffset = 40 * Game.SCALE;
@@ -119,7 +119,7 @@ public class Player extends Entity {
         
             BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-            animations = new BufferedImage[9][8];
+            animations = new BufferedImage[10][8];
             for (int i = 0; i < animations.length; i++)
                 for (int j = 0; j < animations[i].length; j++)
                     animations[i][j] = img.getSubimage(j * 96, i * 96, 96, 96);

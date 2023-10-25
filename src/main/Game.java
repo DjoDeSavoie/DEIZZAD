@@ -1,5 +1,7 @@
 package main;
 
+import entities.Enemy;
+import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 
@@ -14,6 +16,7 @@ public class Game implements Runnable {
 
 	private Player player;
 	private LevelManager levelManager;
+	private EnemyManager enemyManager;
 
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 1.5f;
@@ -34,6 +37,7 @@ public class Game implements Runnable {
 
 	private void initClasses() {
 		levelManager = new LevelManager(this);
+		enemyManager = new EnemyManager();
 		player = new Player(200, 200, (int) (80 * SCALE), (int) (80 * SCALE));
 		player.loadlevelData(levelManager.getCurrentLevel().GetLevelData());
 		
@@ -47,11 +51,13 @@ public class Game implements Runnable {
 	public void update() {
 		player.update();
 		levelManager.update();
+		enemyManager.update();
 	}
 
 	public void render(Graphics g) {
 		levelManager.draw(g);
 		player.render(g);
+		enemyManager.draw(g);
 	}
 
 	@Override

@@ -1,6 +1,44 @@
 package utilz;
 
+import main.Game;
+
 public class Constants {
+
+    public static class EnemyConstants {
+        public static final int ENEMY1 = 0;
+
+        public static final int IDLE = 0;
+        public static final int WALKING = 1;
+        public static final int ATTACK = 2;
+        public static final int HURT = 3;
+        public static final int DEAD = 4;
+
+        public static final int ENEMY1_WIDTH_DEFAULT = 96;
+        public static final int ENEMY1_HEIGHT_DEFAULT = 98;
+
+        public static final int ENEMY1_WIDTH = (int)(ENEMY1_WIDTH_DEFAULT * Game.SCALE);
+        public static final int ENEMY1_HEIGHT = (int)(ENEMY1_HEIGHT_DEFAULT * Game.SCALE);
+
+        public static int GetSpriteAmount(int enemyType, int enemyState){
+            switch(enemyType){
+                case ENEMY1 :
+                    switch(enemyState){
+                        case IDLE:
+                            return 5;
+                        case WALKING:
+                            return 7;
+                        case ATTACK:
+                            return 5;
+                        case HURT:
+                            return 2;
+                        case DEAD:
+                            return 4;
+                    }
+            }
+            return 0;
+        }
+
+    }
 
     public static class Directions{
         public static final int LEFT = 0;
