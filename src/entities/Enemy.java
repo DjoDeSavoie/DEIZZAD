@@ -29,6 +29,10 @@ public abstract class Enemy extends Entity {
         updateAnimationTick();
     }
 
+    private void updateMove(){
+        
+    }
+
     public int getAnimaIndex(){
         return animIndex;
     }

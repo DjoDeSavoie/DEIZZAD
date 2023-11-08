@@ -12,8 +12,8 @@ import static utilz.Constants.EnemyConstants.*;
 public class EnemyManager {
 
     // private Playing playing;   
-    private BufferedImage[][] enemy1Arr; 
-    private ArrayList<Enemy1> enemies1 = new ArrayList<>();
+    private BufferedImage[][] redorcArr; 
+    private ArrayList<RedOrc> redorcs = new ArrayList<>();
 
     public EnemyManager(/*Playing playing*/){
         //this.playing = playing;
@@ -22,13 +22,13 @@ public class EnemyManager {
     }
 
     private void addEnemies(){
-        enemies1 = LoadSave.GetEnemy1();
-        System.out.println("enemies1 size : " + enemies1.size());
+        redorcs = LoadSave.GetRedOrc();
+        // System.out.println("enemies1 size : " + enemies1.size());
     }
 
     public void update(){
-        for(Enemy1 enemy1 : enemies1){
-            enemy1.update();
+        for(RedOrc redorc : redorcs){
+            redorc.update();
         }
     }
 
@@ -37,17 +37,17 @@ public class EnemyManager {
     }
 
     public void drawEnemies1(Graphics g){
-        for(Enemy1 enemy1 : enemies1){
-            g.drawImage(enemy1Arr[enemy1.getEnemyState()][enemy1.getAnimaIndex()], (int) enemy1.getHitbox().x, (int) enemy1.getHitbox().y, ENEMY1_WIDTH_DEFAULT, ENEMY1_HEIGHT_DEFAULT, null);
-        }
+        for(RedOrc redorc : redorcs){
+            g.drawImage(redorcArr[redorc.getEnemyState()][redorc.getAnimaIndex()], (int) redorc.getHitbox().x-15, (int) redorc.getHitbox().y-47, REDORC_WIDTH_DEFAULT, REDORC_HEIGHT_DEFAULT, null);
+        }  
     }
 
     private void loadEnemyImages(){
-        enemy1Arr = new BufferedImage[5][5];// mettre 6 pour le 2ème apres !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.ENEMY1_SPRITE);
-        for(int j=0; j<enemy1Arr.length; j++){
-            for(int i=0; i<enemy1Arr[j].length; i++){
-                enemy1Arr[j][i] = temp.getSubimage(i*ENEMY1_WIDTH_DEFAULT, j*ENEMY1_HEIGHT_DEFAULT, ENEMY1_WIDTH_DEFAULT, ENEMY1_HEIGHT_DEFAULT);
+        redorcArr = new BufferedImage[5][6];// mettre 6 pour le 2ème apres !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.REDORC_SPRITE);
+        for(int j=0; j<redorcArr.length; j++){
+            for(int i=0; i<redorcArr[j].length; i++){
+                redorcArr[j][i] = temp.getSubimage(i*REDORC_WIDTH_DEFAULT, j*REDORC_HEIGHT_DEFAULT, REDORC_WIDTH_DEFAULT, REDORC_HEIGHT_DEFAULT);
             }   
         }
 

@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 
 import static utilz.Constants.EnemyConstants.*;
 
-import entities.Enemy1;
+import entities.RedOrc;
 import main.Game;
 
 
@@ -22,7 +22,7 @@ public class LoadSave {
     public static final String LEVEL_ATLAS = "outside_sprites.png";
     public static final String LEVEL_ONE_DATA = "level_one_data.png";
 
-    public static final String ENEMY1_SPRITE = "enemy1.png";
+    public static final String REDORC_SPRITE = "RedOrc.png";
     
     public static BufferedImage GetSpriteAtlas(String fileName) {
 
@@ -45,15 +45,15 @@ public class LoadSave {
         return img;
     }
 
-    public static ArrayList<Enemy1> GetEnemy1(){ 
+    public static ArrayList<RedOrc> GetRedOrc(){ 
         BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
-        ArrayList<Enemy1> list = new ArrayList<>();
+        ArrayList<RedOrc> list = new ArrayList<>();
          for(int j = 0; j < img.getHeight(); j++)
             for(int i = 0; i < img.getWidth(); i++){
                 Color color = new Color(img.getRGB(i, j));
                 int value = color.getGreen();
-                if(value == ENEMY1)
-                    list.add(new Enemy1(i*Game.TILES_SIZE, j*Game.TILES_SIZE));
+                if(value == REDORC)
+                    list.add(new RedOrc(i*Game.TILES_SIZE, j*Game.TILES_SIZE));
             }
         return list; 
     }
