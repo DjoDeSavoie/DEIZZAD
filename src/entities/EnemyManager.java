@@ -26,9 +26,9 @@ public class EnemyManager {
         // System.out.println("enemies1 size : " + enemies1.size());
     }
 
-    public void update(){
+    public void update(int[][] lvlData){
         for(RedOrc redorc : redorcs){
-            redorc.update();
+            redorc.update(lvlData);
         }
     }
 

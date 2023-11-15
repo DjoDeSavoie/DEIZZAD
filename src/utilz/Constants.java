@@ -29,7 +29,7 @@ public class Constants {
                         case IDLE:
                             return 4;
                         case WALKING:
-                            return 7;
+                            return 5;
                         case ATTACK:
                             return 5;
                         case HURT:
