@@ -31,7 +31,7 @@ public class Player extends Entity {
 
     //Jumping / Gravity variables
     private float airSpeed = 0f;
-    private float gravity = 0.04f * Game.SCALE;
+    private float gravity = 0.025f * Game.SCALE;
     private float jumpSpeed = -2.25f * Game.SCALE;
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
@@ -40,7 +40,7 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height); // x et y définit dans la classe Entity
         loadAnimation();
-        initHitbox(x, y, 25 * Game.SCALE, 40 * Game.SCALE);
+        initHitbox(x, y, 25 * Game.SCALE, 27);
 
     }
 
