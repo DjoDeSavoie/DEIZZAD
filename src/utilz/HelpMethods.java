@@ -3,7 +3,6 @@ package utilz;
 import java.awt.geom.Rectangle2D;
 
 import main.Game;
-import java.awt.geom.Rectangle2D;
 
 public class HelpMethods {
 
@@ -33,6 +32,20 @@ public class HelpMethods {
 			return true;
 		return false;
 	}
+	
+	public static float GetEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed){
+
+		int currentTile = (int)(hitbox.x / Game.TILES_SIZE);
+		if(xSpeed > 0) {
+			//Right
+			int tileXPos = currentTile * Game.TILES_SIZE;
+			int xOffset = (int)(Game.TILES_SIZE - hitbox.width);
+			return tileXPos + xOffset - 1; // -1 pour ne pas entrer dans le mur
+		}else {
+			//Left
+			return currentTile * Game.TILES_SIZE;
+		}
+	}
 
 	// recupere le y de la pos si l'entity est en l'air ou sous un sol
 	public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed){
@@ -40,11 +53,11 @@ public class HelpMethods {
 		if (airSpeed > 0) {
 			// chite
 			int tileYPos = currentTile * Game.TILES_SIZE;
-			int yoffset = (int) (Game. TILES_SIZE - hitbox.height);
+			int yoffset = (int) (Game.TILES_SIZE - hitbox.height);
 			return tileYPos + yoffset - 1;
 		} else
-		// saute
-		return currentTile * Game. TILES_SIZE;
+			// saute
+			return currentTile * Game.TILES_SIZE;
 	}
 
 	//verifie si l'entity est sur le sol
@@ -61,17 +74,4 @@ public class HelpMethods {
 		return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height+1, lvlData);
 	}
 
-	public static float GetEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed){
-
-		int currentTile = (int)(hitbox.x / Game.TILES_SIZE);
-		if(xSpeed > 0) {
-			//Right
-			int tileXPos = currentTile * Game.TILES_SIZE;
-			int xOffset = (int)(Game.TILES_SIZE - hitbox.width);
-			return tileXPos + xOffset - 1;
-		}else {
-			//Left
-			return currentTile * Game.TILES_SIZE;
-		}
-	}
 }

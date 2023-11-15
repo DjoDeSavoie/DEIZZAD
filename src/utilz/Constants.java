@@ -79,6 +79,8 @@ public class Constants {
                     return 4;
                 case ATTACK_3:
                     return 4;
+                case HURT:
+                    return 2;
                 case DEAD:
                     return 4;
                 default:
