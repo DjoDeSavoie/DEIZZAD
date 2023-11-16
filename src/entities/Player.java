@@ -26,8 +26,8 @@ public class Player extends Entity {
 	private boolean left, up, right, down, jump;
     private float playerSpeed = 1.0f;
     private int[][] lvlData;
-    private float xDrawOffset = 25 * Game.SCALE;
-    private float yDrawOffset = 43 * Game.SCALE;
+    private float xDrawOffset = 24 * Game.SCALE;
+    private float yDrawOffset = 40 * Game.SCALE;
 
     //Jumping / Gravity variables
     private float airSpeed = 0f;
@@ -40,7 +40,7 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height); // x et y définit dans la classe Entity
         loadAnimation();
-        initHitbox(x, y, 25 * Game.SCALE, 30*Game.SCALE);
+        initHitbox(x, y, 26 * Game.SCALE, 30 * Game.SCALE);
 
     }
 
@@ -53,7 +53,7 @@ public class Player extends Entity {
 
     public void render(Graphics g) {
 		g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x-xDrawOffset), (int)(hitbox.y-yDrawOffset), width, height, null);
-        drawHitbox(g,0);
+        //drawHitbox(g,0);
     }
 
 	private void updateAnimationTick(){

@@ -38,7 +38,7 @@ public class Game implements Runnable {
 	private void initClasses() {
 		levelManager = new LevelManager(this);
 		enemyManager = new EnemyManager();
-		player = new Player(200, 200, (int) (75 * SCALE), (int) (75* SCALE));
+		player = new Player(200, 200, (int) (75 * SCALE), (int) (73* SCALE));
 		player.loadlvlData(levelManager.getCurrentLevel().GetLevelData());
 		
 	}
