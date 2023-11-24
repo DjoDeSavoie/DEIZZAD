@@ -38,6 +38,19 @@ public class Player extends Entity {
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
     
+    private BufferedImage healthBar;
+
+    private int statusBarWidth = 100;
+    private int statusBarHeight = 10;
+    private int statusBarX = 10;
+    private int statusBarY = 10;
+
+    private int healthBarWidth = 100;
+    private int healthBarHeight = 10;
+    private int healthBarX = 10;
+    private int healthBarY = 10;
+    
+    
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height); // x et y définit dans la classe Entity
