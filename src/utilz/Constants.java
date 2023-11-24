@@ -37,10 +37,14 @@ public class Constants {
         //accesseur de la valeur du sprite propre a l'objet
 		public static int GetSpriteAmount(int object_type) {
 			switch (object_type) {
-			case RED_POTION, BLUE_POTION:
+			case RED_POTION:
 				return 7;
-			case BARREL, BOX:
+            case  BLUE_POTION:
+                return 7;
+			case BARREL:
 				return 8;
+            case BOX:
+                return 8;
 			}
 			return 1;
 		}
