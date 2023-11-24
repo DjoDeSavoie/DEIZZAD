@@ -1,13 +1,16 @@
 package entities;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.awt.geom.AffineTransform;
 
 import utilz.LoadSave;
 
 import static utilz.Constants.EnemyConstants.*;
+import static utilz.Constants.Directions.*;
 
 public class EnemyManager {
 
@@ -26,21 +29,55 @@ public class EnemyManager {
         // System.out.println("enemies1 size : " + enemies1.size());
     }
 
-    public void update(int[][] lvlData){
+    public void update(int[][] lvlData, Player player){
         for(RedOrc redorc : redorcs){
-            redorc.update(lvlData);
+            redorc.update(lvlData, player);
         }
     }
 
     public void draw(Graphics g){
-        drawEnemies1(g);
+        drawRedOrc(g);
     }
 
-    public void drawEnemies1(Graphics g){
-        for(RedOrc redorc : redorcs){
-            g.drawImage(redorcArr[redorc.getEnemyState()][redorc.getAnimaIndex()], (int) redorc.getHitbox().x-15, (int) redorc.getHitbox().y-47, REDORC_WIDTH_DEFAULT, REDORC_HEIGHT_DEFAULT, null);
-        }  
+    // Cette méthode est utilisée pour obtenir une version miroir d'un BufferedImage
+    private BufferedImage getMirroredImage(BufferedImage image) {
+        AffineTransform at = AffineTransform.getScaleInstance(-1, 1);
+        at.translate(-image.getWidth(), 0);
+    
+        BufferedImage mirroredImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = mirroredImage.createGraphics();
+        g2d.setTransform(at);
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+    
+        return mirroredImage;
     }
+    
+    // Cette méthode est utilisée pour dessiner un RedOrc
+    public void drawRedOrc(Graphics g) {
+        for (RedOrc redorc : redorcs) {
+            int x = (int) redorc.getHitbox().x - 15;
+            int y = (int) redorc.getHitbox().y - 47;
+            int width = REDORC_WIDTH_DEFAULT;
+            int height = REDORC_HEIGHT_DEFAULT;
+    
+            BufferedImage imageToDraw;
+    
+            if (redorc.walkDir == LEFT) {
+                //si le RedOrc se déplace vers la gauche
+                imageToDraw = getMirroredImage(redorcArr[redorc.getEnemyState()][redorc.getAnimaIndex()]);
+            } else {
+                // si le RedOrc se déplace vers la droite
+                imageToDraw = redorcArr[redorc.getEnemyState()][redorc.getAnimaIndex()];
+            }
+    
+            g.drawImage(imageToDraw, x, y, width, height, null);
+    
+            redorc.drawHitbox(g, 0);
+        }
+    }
+    
+    
 
     private void loadEnemyImages(){
         redorcArr = new BufferedImage[5][6];// mettre 6 pour le 2ème apres !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

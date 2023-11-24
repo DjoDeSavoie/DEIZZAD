@@ -73,7 +73,7 @@ public class Constants {
                         case WALKING:
                             return 5;
                         case ATTACK:
-                            return 5;
+                            return 4;
                         case HURT:
                             return 2;
                         case DEAD:
@@ -84,7 +84,7 @@ public class Constants {
         }
 
     }
-
+    //enum a la place + mettre constante dans fichier meta + mettre a jour enemy et enemymanager enlever fcts redondantes + 
     public static class Directions{
         public static final int LEFT = 0;
         public static final int UP = 1;
