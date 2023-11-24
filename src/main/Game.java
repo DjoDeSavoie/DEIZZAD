@@ -59,7 +59,7 @@ public class Game implements Runnable {
 		player.update();
 		levelManager.update();
 		objectManager.update();
-		enemyManager.update(levelManager.getCurrentLevel().GetLevelData());
+		enemyManager.update(levelManager.getCurrentLevel().GetLevelData(), player);
 	}
 
 	public void render(Graphics g) {
