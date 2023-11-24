@@ -1,3 +1,5 @@
+//fcts utilisées partout
+
 package utilz;
 
 import java.awt.geom.Rectangle2D;
@@ -8,10 +10,10 @@ public class HelpMethods {
 
 	//test pour verifier si l'entity peut se deplacer a la position indiquée
 	public static boolean CanMoveHere(float x, float y, float width, float height, int[][] lvlData) {
-		if (!IsSolid(x, y, lvlData))
-			if (!IsSolid(x + width, y + height, lvlData))
-				if (!IsSolid(x + width, y, lvlData))
-					if (!IsSolid(x, y + height, lvlData))
+		if (!IsSolid(x, y, lvlData)) // top left
+			if (!IsSolid(x + width, y + height, lvlData)) // bottom right
+				if (!IsSolid(x + width, y, lvlData)) // top right
+					if (!IsSolid(x, y + height, lvlData)) // bottom left
 						return true;
 		return false;
 	}
@@ -26,7 +28,12 @@ public class HelpMethods {
 		float xIndex = x / Game.TILES_SIZE;
 		float yIndex = y / Game.TILES_SIZE;
 
-		int value = lvlData[(int) yIndex][(int) xIndex];
+		return isTileSolid((int) xIndex, (int) yIndex, lvlData);
+	}
+
+	//verifie si il y'a un obstacle a la position donnée
+	public static boolean isTileSolid(int x, int y, int[][] lvlData) {
+		int value = lvlData[y][x];
 
 		if (value >= 48 || value < 0 || value != 11)
 			return true;
@@ -72,6 +79,31 @@ public class HelpMethods {
 	//verifie si il y'a un floor a la position donnée
 	public static boolean isFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData){
 		return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height+1, lvlData);
+	}
+
+	//verifie si il y'a un obstacle a la position donnée
+	public static boolean isSightClear(int[][] lvlData, Rectangle2D.Float firstHitbox, Rectangle2D.Float secondHitbox, int yTile){
+		//Chaque int correspond a la position du joueur ou de l'enemy sur la map
+		int firstXTile = (int) (firstHitbox.x / Game.TILES_SIZE);
+		int secondXTile = (int) (secondHitbox.x / Game.TILES_SIZE);
+
+		if(firstXTile > secondXTile){
+			for(int i=0; i<firstXTile-secondXTile; i++){
+				if(isTileSolid(secondXTile+i, yTile, lvlData))
+					return false;
+				//si il y'a un trou
+				if(!isTileSolid(secondXTile+i, yTile+1, lvlData))
+					return false;
+					
+			}
+			return true;
+		}else {
+			for(int i=0; i<secondXTile-firstXTile; i++){
+				if(isTileSolid(firstXTile+i, yTile, lvlData))
+					return false;
+			}
+			return true;
+		}
 	}
 
 }
