@@ -23,6 +23,11 @@ public class LoadSave {
     public static final String LEVEL_ONE_DATA = "level_one_data.png";
 
     public static final String REDORC_SPRITE = "RedOrc.png";
+
+    public static final String POTION_ATLAS = "potions_sprites.png";
+    public static final String CONTAINER_ATLAS = "objects_sprites.png";
+
+
     
     public static BufferedImage GetSpriteAtlas(String fileName) {
 
