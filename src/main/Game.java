@@ -1,6 +1,9 @@
 package main;
 
-
+import entities.Enemy;
+import entities.EnemyManager;
+import entities.Player;
+import levels.LevelManager;
 
 import java.awt.Graphics;
 import Gamestates.Playing;
@@ -14,10 +17,9 @@ public class Game implements Runnable {
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
 
-	private Playing playing;
-	private Menu menu;
-
-	
+	private Player player;
+	private LevelManager levelManager;
+	private EnemyManager enemyManager;
 
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 1.5f;
@@ -37,8 +39,11 @@ public class Game implements Runnable {
 	}
 
 	private void initClasses() {
-		playing = new Playing(this);
-		menu = new Menu(this);
+		levelManager = new LevelManager(this);
+		enemyManager = new EnemyManager();
+		player = new Player(200, 200, (int) (75 * SCALE), (int) (73* SCALE));
+		player.loadlvlData(levelManager.getCurrentLevel().GetLevelData());
+		
 	}
 
 	private void startGameloop() {
@@ -47,29 +52,15 @@ public class Game implements Runnable {
 	}
 
 	public void update() {
-		switch (Gamestate.state) {
-			case MENU:
-				menu.update();
-				break;
-			case PLAYING:
-				playing.update();
-				break;
-			default:
-				break;
-		}
+		player.update();
+		levelManager.update();
+		enemyManager.update(levelManager.getCurrentLevel().GetLevelData());
 	}
 
 	public void render(Graphics g) {
-		switch (Gamestate.state) {
-			case MENU:
-				menu.draw(g);
-				break;
-			case PLAYING:
-				playing.draw(g);
-				break;
-			default:
-				break;
-		}
+		levelManager.draw(g);
+		player.render(g);
+		enemyManager.draw(g);
 	}
 
 	@Override
@@ -129,6 +120,4 @@ public class Game implements Runnable {
 	public Playing getPlaying() {
 		return playing;
 	}
-
-	
 }

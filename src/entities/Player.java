@@ -10,6 +10,8 @@ import static utilz.HelpMethods.*;
 
 
 import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 import main.Game;
 
@@ -36,6 +38,19 @@ public class Player extends Entity {
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
     
+    private BufferedImage healthBar;
+
+    private int statusBarWidth = 100;
+    private int statusBarHeight = 10;
+    private int statusBarX = 10;
+    private int statusBarY = 10;
+
+    private int healthBarWidth = 100;
+    private int healthBarHeight = 10;
+    private int healthBarX = 10;
+    private int healthBarY = 10;
+    
+    
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height); // x et y définit dans la classe Entity
@@ -51,9 +66,34 @@ public class Player extends Entity {
 		setAnimation();
     }
 
+    private BufferedImage getMirroredImage(BufferedImage image) {
+        AffineTransform at = AffineTransform.getScaleInstance(-1, 1);
+        at.translate(-image.getWidth(), 0);
+    
+        BufferedImage mirroredImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = mirroredImage.createGraphics();
+        g2d.setTransform(at);
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+    
+        return mirroredImage;
+    }
+
     public void render(Graphics g) {
-		g.drawImage(animations[playerAction][aniIndex], (int)(hitbox.x-xDrawOffset), (int)(hitbox.y-yDrawOffset), width, height, null);
-        //drawHitbox(g,0);
+        BufferedImage imageToDraw = animations[playerAction][aniIndex];
+        
+        int x = (int) (hitbox.x - xDrawOffset);
+        int y = (int) (hitbox.y - yDrawOffset);
+        int width = this.width; 
+        int height = this.height; 
+    
+        if (isLeft()) {
+            // Si le joueur se déplace vers la gauche
+            imageToDraw = getMirroredImage(imageToDraw);
+        }
+    
+        g.drawImage(imageToDraw, x, y, width, height, null);
+        // drawHitbox(g, 0); 
     }
 
 	private void updateAnimationTick(){
