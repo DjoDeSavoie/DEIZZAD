@@ -20,4 +20,5 @@ public class ConstantsEnemy {
 
         public static final int REDORC_DRAWOFFSET_X = (int)(26 * Game.SCALE);
         public static final int REDORC_DRAWOFFSET_Y = (int)(9 * Game.SCALE);
+        
 }
