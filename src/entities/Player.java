@@ -6,6 +6,7 @@ import static utilz.Constants.PlayerConstants.JUMPING;
 import static utilz.Constants.PlayerConstants.WALKING;
 import static utilz.Constants.PlayerConstants.ATTACK_1;
 import static utilz.HelpMethods.*;
+import Gamestates.Playing;
 
 
 
@@ -62,13 +63,13 @@ public class Player extends Entity {
     private int flipW = 1;
 
     private boolean attackChecked;
-    //private Playing playing;
+    private Playing playing;
     //enelver !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //private EnemyManager enemyManager;
 
-    public Player(float x, float y, int width, int height/*, Playing playing*/) {
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height); // x et y définit dans la classe Entity
-        //this.playing = playing;
+        this.playing = playing;
         loadAnimation();
         initHitbox(x, y, 26 * Game.SCALE, 30 * Game.SCALE);
         initAttackBox();
@@ -93,12 +94,7 @@ public class Player extends Entity {
         if(attackChecked || aniIndex != 1)
             return;
         attackChecked = true;
-        //playing.checkEnemyHit(attackBox);
-        checkEnemyHit(attackBox);
-    }
-
-    public void checkEnemyHit(Rectangle2D.Float attackBox){
-        //enemyManager.checkEnemyHit(attackBox);
+        playing.checkEnemyHit(attackBox);
     }
 
     private void updateAttackBox() {

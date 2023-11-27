@@ -1,11 +1,11 @@
 package main;
 
-import entities.Enemy;
-import entities.EnemyManager;
-import entities.Player;
-import levels.LevelManager;
-import objects.ObjectManager;
-import java.awt.geom.Rectangle2D;
+// import entities.Enemy;
+// import entities.EnemyManager;
+// import entities.Player;
+// import levels.LevelManager;
+// import objects.ObjectManager;
+// import java.awt.geom.Rectangle2D;
 
 import java.awt.Graphics;
 import Gamestates.Playing;
@@ -15,13 +15,17 @@ import Gamestates.Menu;
 public class Game implements Runnable {
 
 	private GamePanel gamePanel;
+	private GameWindow gameWindow;
 	private Thread thread;
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
 
-	private Player player;
-	private LevelManager levelManager;
-	private EnemyManager enemyManager;
+	private Playing playing;
+	private Menu menu;
+
+	// private Player player;
+	// private LevelManager levelManager;
+	// private EnemyManager enemyManager;
 
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 1.5f;
@@ -34,17 +38,19 @@ public class Game implements Runnable {
 	public Game() {
 		initClasses();
 		gamePanel = new GamePanel(this);
-		new GameWindow(gamePanel);
+		gameWindow = new GameWindow(gamePanel);
 		gamePanel.requestFocus();
 
 		startGameloop();
 	}
 
 	private void initClasses() {
-		levelManager = new LevelManager(this);
-		enemyManager = new EnemyManager();
-		player = new Player(200, 200, (int) (75 * SCALE), (int) (73* SCALE));
-		player.loadlvlData(levelManager.getCurrentLevel().GetLevelData());
+		// levelManager = new LevelManager(this);
+		// enemyManager = new EnemyManager();
+		// player = new Player(200, 200, (int) (75 * SCALE), (int) (73* SCALE));
+		// player.loadlvlData(levelManager.getCurrentLevel().GetLevelData());
+		menu = new Menu(this);
+		playing = new Playing(this);
 		
 	}
 
@@ -54,15 +60,39 @@ public class Game implements Runnable {
 	}
 
 	public void update() {
-		player.update();
-		levelManager.update();
-		enemyManager.update(levelManager.getCurrentLevel().GetLevelData());
+		// player.update();
+		// levelManager.update();
+		// enemyManager.update(levelManager.getCurrentLevel().GetLevelData());
+		
+		switch (Gamestate.state) {
+			case MENU:
+				menu.update();
+				break;
+			case PLAYING:
+				playing.update();
+				break;
+			default:
+				System.exit(0);
+				break;
+	
+			}
+	
 	}
 
 	public void render(Graphics g) {
-		levelManager.draw(g);
-		player.render(g);
-		enemyManager.draw(g);
+		// levelManager.draw(g);
+		// player.render(g);
+		// enemyManager.draw(g);
+		switch (Gamestate.state) {
+			case MENU:
+				menu.draw(g);
+				break;
+			case PLAYING:
+				playing.draw(g);
+				break;
+			default:
+				break;
+			}
 	}
 
 	@Override

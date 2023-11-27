@@ -1,13 +1,19 @@
 package Gamestates;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.Random;
 
+import entities.RedOrc;
 import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import utilz.LoadSave;
 
 public class Playing extends State implements Statemethods {
 
@@ -22,8 +28,8 @@ public class Playing extends State implements Statemethods {
 
     private void initClasses() {
         levelManager = new LevelManager(game);
-        enemyManager = new EnemyManager();
-        player = new Player(200, 200, (int) (75 * Game.SCALE), (int) (73 * Game.SCALE));
+        enemyManager = new EnemyManager(this);
+        player = new Player(200, 200, (int) (75 * Game.SCALE), (int) (73 * Game.SCALE), this);
         player.loadlvlData(levelManager.getCurrentLevel().GetLevelData());
 
     }
@@ -40,13 +46,19 @@ public class Playing extends State implements Statemethods {
     public void update() {
         levelManager.update();
         player.update();
+        enemyManager.update(levelManager.getCurrentLevel().GetLevelData(), player);
     }
 
     @Override
     public void draw(Graphics g) {
         levelManager.draw(g);
         player.render(g);
+        enemyManager.draw(g);
     }
+
+    public void checkEnemyHit(Rectangle2D.Float attackBox) {
+		enemyManager.checkEnemyHit(attackBox);
+	}
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -99,4 +111,5 @@ public class Playing extends State implements Statemethods {
                 break;
         }
     }
+    
 }

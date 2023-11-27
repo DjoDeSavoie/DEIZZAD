@@ -13,18 +13,19 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import utilz.LoadSave;
+import Gamestates.Playing;
 
 import static utilz.Constants.EnemyConstants.*;
 import static utilz.Constants.Directions.*;
 
 public class EnemyManager {
 
-    // private Playing playing;   
+    private Playing playing;   
     private BufferedImage[][] redorcArr; 
     private ArrayList<RedOrc> redorcs = new ArrayList<>();
 
-    public EnemyManager(/*Playing playing*/){
-        //this.playing = playing;
+    public EnemyManager(Playing playing){
+        this.playing = playing;
         loadEnemyImages();
         addEnemies();
     }
@@ -36,7 +37,8 @@ public class EnemyManager {
 
     public void update(int[][] lvlData, Player player){
         for(RedOrc redorc : redorcs){
-            redorc.update(lvlData, player);
+            if(redorc.isActive())
+                redorc.update(lvlData, player);
         }
     }
 
