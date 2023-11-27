@@ -20,7 +20,9 @@ public class HelpMethods {
 
 	//test pour savoir si la position indiquée est interdite pour un deplacement
 	private static boolean IsSolid(float x, float y, int[][] lvlData) {
-		if (x < 0 || x >= Game.GAME_WIDTH)
+		// parceque la taille du level est plus grande que la taille de l'ecran
+		int maxWidth = lvlData[0].length * Game.TILES_SIZE;
+		if (x < 0 || x >= maxWidth)
 			return true;
 		if (y < 0 || y >= Game.GAME_HEIGHT)
 			return true;
@@ -76,8 +78,11 @@ public class HelpMethods {
 		return true;
 	}
 
-	//verifie si il y'a un floor a la position donnée
+	//verifie si il y'a un floor a la position donnée et si on depasse les limites du niveau
 	public static boolean isFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData){
+		if(xSpeed > 0)
+			return IsSolid(hitbox.x + hitbox.width + xSpeed, hitbox.y + hitbox.height+1, lvlData);
+		else
 		return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height+1, lvlData);
 	}
 

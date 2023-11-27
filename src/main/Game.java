@@ -8,22 +8,20 @@ import objects.ObjectManager;
 import java.awt.geom.Rectangle2D;
 
 import java.awt.Graphics;
+import Gamestates.Playing;
+import Gamestates.Gamestate;
+import Gamestates.Menu;
 
 public class Game implements Runnable {
 
 	private GamePanel gamePanel;
 	private Thread thread;
 	private final int FPS_SET = 120;
-	private final int UPS_SET = 200; 
+	private final int UPS_SET = 200;
 
 	private Player player;
 	private LevelManager levelManager;
 	private EnemyManager enemyManager;
-
-	//pour pouvoir dessiner les objets potions box etc
-	private ObjectManager objectManager;
-
-	private int xLvlOffset;
 
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 1.5f;
@@ -38,14 +36,13 @@ public class Game implements Runnable {
 		gamePanel = new GamePanel(this);
 		new GameWindow(gamePanel);
 		gamePanel.requestFocus();
-		
+
 		startGameloop();
 	}
 
 	private void initClasses() {
 		levelManager = new LevelManager(this);
 		enemyManager = new EnemyManager();
-		objectManager = new ObjectManager();
 		player = new Player(200, 200, (int) (75 * SCALE), (int) (73* SCALE));
 		player.loadlvlData(levelManager.getCurrentLevel().GetLevelData());
 		
@@ -59,15 +56,13 @@ public class Game implements Runnable {
 	public void update() {
 		player.update();
 		levelManager.update();
-		objectManager.update();
-		enemyManager.update(levelManager.getCurrentLevel().GetLevelData(), player);
+		enemyManager.update(levelManager.getCurrentLevel().GetLevelData());
 	}
 
 	public void render(Graphics g) {
 		levelManager.draw(g);
 		player.render(g);
 		enemyManager.draw(g);
-		objectManager.draw(g, xLvlOffset);
 	}
 
 	@Override
@@ -115,18 +110,18 @@ public class Game implements Runnable {
 		}
 	}
 
-	public void windowFocusLost(){
-		player.resetDirBooleans();
+	public void windowFocusLost() {
+		if(Gamestate.state == Gamestate.PLAYING)
+			playing.getPlayer().resetDirBooleans();
 	}
 
-	public Player getPlayer(){
-		return player;
+	public Menu getMenu() {
+		return menu;
 	}
-
-	public ObjectManager getObjectManager(){
-		return objectManager;
+	
+	public Playing getPlaying() {
+		return playing;
 	}
-
 	
 
 }

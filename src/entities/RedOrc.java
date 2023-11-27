@@ -1,4 +1,4 @@
-package entities;
+ package entities;
 
 import static utilz.Constants.EnemyConstants.*;
 import static utilz.HelpMethods.*;
