@@ -87,6 +87,26 @@ public class Constants {
             return 0;
         }
 
+        public static int getMaxHealth(int enemyType){
+            switch (enemyType) {
+                case REDORC:
+                    return 10;
+            
+                default:
+                    return 0;
+            }
+        }
+
+        public static int getEnemyDamage(int enemyType){
+            switch (enemyType) {
+                case REDORC:
+                    return 15;
+            
+                default:
+                    return 0;
+            }
+        }
+
     }
     //enum a la place + mettre constante dans fichier meta + mettre a jour enemy et enemymanager enlever fcts redondantes + 
     public static class Directions{

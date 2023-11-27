@@ -5,6 +5,7 @@ import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import objects.ObjectManager;
+import java.awt.geom.Rectangle2D;
 
 import java.awt.Graphics;
 
@@ -125,5 +126,7 @@ public class Game implements Runnable {
 	public ObjectManager getObjectManager(){
 		return objectManager;
 	}
+
+	
 
 }

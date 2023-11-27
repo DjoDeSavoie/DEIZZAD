@@ -4,7 +4,7 @@ import static utilz.Constants.PlayerConstants.GetSpriteAmount;
 import static utilz.Constants.PlayerConstants.IDLE;
 import static utilz.Constants.PlayerConstants.JUMPING;
 import static utilz.Constants.PlayerConstants.WALKING;
-import static utilz.Constants.PlayerConstants.ATTACK_3;
+import static utilz.Constants.PlayerConstants.ATTACK_1;
 import static utilz.HelpMethods.*;
 
 
@@ -12,6 +12,7 @@ import static utilz.HelpMethods.*;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import main.Game;
 
@@ -40,60 +41,128 @@ public class Player extends Entity {
     
     private BufferedImage healthBar;
 
-    private int statusBarWidth = 100;
-    private int statusBarHeight = 10;
-    private int statusBarX = 10;
-    private int statusBarY = 10;
+    // private int statusBarWidth = 100;
+    // private int statusBarHeight = 10;
+    // private int statusBarX = 10;
+    // private int statusBarY = 10;
 
-    private int healthBarWidth = 100;
-    private int healthBarHeight = 10;
-    private int healthBarX = 10;
-    private int healthBarY = 10;
+    private int healthBarWidth = (int) (200 * Game.SCALE);
+    private int healthBarHeight = (int) (60 * Game.SCALE);
+    private int healthBarX = (int) (10 * Game.SCALE);
+    private int healthBarY = (int) (10 * Game.SCALE);
     
-    
+    private int maxHealth = 100;
+    private int currentHealth = maxHealth+20;
+    private int healthWidth = healthBarWidth;
 
-    public Player(float x, float y, int width, int height) {
+    //attack box
+    private Rectangle2D.Float attackBox;
+
+    private int flipX = 0;
+    private int flipW = 1;
+
+    private boolean attackChecked;
+    //private Playing playing;
+    //enelver !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //private EnemyManager enemyManager;
+
+    public Player(float x, float y, int width, int height/*, Playing playing*/) {
         super(x, y, width, height); // x et y définit dans la classe Entity
+        //this.playing = playing;
         loadAnimation();
         initHitbox(x, y, 26 * Game.SCALE, 30 * Game.SCALE);
+        initAttackBox();
+    }
 
+    private void initAttackBox() {
+        attackBox = new Rectangle2D.Float(x,y, (int) (20 * Game.SCALE), (int) (20 * Game.SCALE));
     }
 
     public void update() {
 
+        updateHealthBar();
+        updateAttackBox();
 		updatePos();
+        if(attacking)
+            checkAttack();
         updateAnimationTick();
 		setAnimation();
     }
 
-    private BufferedImage getMirroredImage(BufferedImage image) {
-        AffineTransform at = AffineTransform.getScaleInstance(-1, 1);
-        at.translate(-image.getWidth(), 0);
-    
-        BufferedImage mirroredImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = mirroredImage.createGraphics();
-        g2d.setTransform(at);
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
-    
-        return mirroredImage;
+    private void checkAttack() {
+        if(attackChecked || aniIndex != 1)
+            return;
+        attackChecked = true;
+        //playing.checkEnemyHit(attackBox);
+        checkEnemyHit(attackBox);
     }
+
+    public void checkEnemyHit(Rectangle2D.Float attackBox){
+        //enemyManager.checkEnemyHit(attackBox);
+    }
+
+    private void updateAttackBox() {
+        if(left)
+            attackBox.x = hitbox.x - hitbox.width- (int) (5 * Game.SCALE);
+        else if(right)
+            attackBox.x = hitbox.x + hitbox.width + (int) (5 * Game.SCALE);
+        attackBox.y = hitbox.y + (int) (10 * Game.SCALE);
+    }
+
+    private void updateHealthBar() {
+        healthWidth = (int) (healthBarWidth * ((float) currentHealth / (float) maxHealth));
+    }
+
+    public void changeHealth(int value){
+        currentHealth += value;
+        if(currentHealth >= maxHealth)
+            currentHealth = maxHealth;
+        if(currentHealth <= 0) 
+            currentHealth = 0;
+            //gameOver();
+    }
+
+    // private BufferedImage getMirroredImage(BufferedImage image) {
+    //     AffineTransform at = AffineTransform.getScaleInstance(-1, 1);
+    //     at.translate(-image.getWidth(), 0);
+    
+    //     BufferedImage mirroredImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    //     Graphics2D g2d = mirroredImage.createGraphics();
+    //     g2d.setTransform(at);
+    //     g2d.drawImage(image, 0, 0, null);
+    //     g2d.dispose();
+    
+    //     return mirroredImage;
+    // }
 
     public void render(Graphics g) {
         BufferedImage imageToDraw = animations[playerAction][aniIndex];
         
-        int x = (int) (hitbox.x - xDrawOffset);
+        int x = (int) (hitbox.x - xDrawOffset) + flipX;
         int y = (int) (hitbox.y - yDrawOffset);
-        int width = this.width; 
+        int width = this.width * flipW; 
         int height = this.height; 
     
-        if (isLeft()) {
-            // Si le joueur se déplace vers la gauche
-            imageToDraw = getMirroredImage(imageToDraw);
-        }
+        // if (isLeft()) {
+        //     // Si le joueur se déplace vers la gauche
+        //     imageToDraw = getMirroredImage(imageToDraw);
+        // }
     
         g.drawImage(imageToDraw, x, y, width, height, null);
+        drawHealthBar(g);
+        drawAttackBox(g,0);
         // drawHitbox(g, 0); 
+    }
+
+    private void drawAttackBox(Graphics g, int offset) {
+        g.setColor(java.awt.Color.RED);
+        g.drawRect((int) attackBox.x - offset, (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
+    }
+    
+    private void drawHealthBar(Graphics g) {
+        g.drawImage(healthBar, healthBarX, healthBarY, healthBarWidth, healthBarHeight, null);
+        g.setColor(java.awt.Color.RED);
+        g.fillRect(healthBarX + (int)(35 * Game.SCALE) , healthBarY + (int)(15 * Game.SCALE), healthWidth-120, 10);
     }
 
 	private void updateAnimationTick(){
@@ -104,6 +173,7 @@ public class Player extends Entity {
 			if(aniIndex >= GetSpriteAmount(playerAction)){
 				aniIndex = 0;
                 attacking = false;
+                attackChecked = false;
 			}
 		}
 	}
@@ -124,9 +194,14 @@ public class Player extends Entity {
         }
         
 
-        if(attacking)
-            playerAction = ATTACK_3;
-
+        if(attacking){
+            playerAction = ATTACK_1;
+            //si on attaque et que l'on ne faisait pas d'attaque avant
+            if(startAni != ATTACK_1 ){
+                aniIndex = 1;
+                aniTick = 0; 
+            }
+        }
         if(startAni != playerAction)
             resetAniTick();
 	}
@@ -152,10 +227,16 @@ public class Player extends Entity {
         //vitesse horizontale a 0
         float xSpeed = 0;
 
-        if(left)
+        if(left){
             xSpeed -= playerSpeed;
-        if(right)
+            flipX = width;
+            flipW = -1;
+        }
+        if(right){
             xSpeed += playerSpeed;
+            flipX = 0;
+            flipW = 1;
+        }
         
         //met a jour la position du joueur si il n'est pas en l'air
         if(!inAir)
@@ -205,14 +286,16 @@ public class Player extends Entity {
 
     private void loadAnimation() {
         
-            BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-            animations = new BufferedImage[10][8];
-            for (int i = 0; i < animations.length; i++)
-                for (int j = 0; j < animations[i].length; j++)
-                    animations[i][j] = img.getSubimage(j * 96, i * 96, 96, 96);
+        animations = new BufferedImage[10][8];
+        for (int i = 0; i < animations.length; i++)
+            for (int j = 0; j < animations[i].length; j++)
+                animations[i][j] = img.getSubimage(j * 96, i * 96, 96, 96);
 
-        }
+        healthBar = LoadSave.GetSpriteAtlas(LoadSave.HEALTH_BAR);
+
+    }
 
     //permet de réinitialiser les variables booléennes de direction
     //Dans le ccas par exemple où l'on quitte la fenetre de jeu pendant que le perso se déplace

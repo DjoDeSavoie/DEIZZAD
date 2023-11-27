@@ -2,10 +2,15 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import org.w3c.dom.css.Rect;
+
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 
 import utilz.LoadSave;
 
@@ -56,6 +61,7 @@ public class EnemyManager {
     // Cette méthode est utilisée pour dessiner un RedOrc
     public void drawRedOrc(Graphics g) {
         for (RedOrc redorc : redorcs) {
+            if(redorc.isActive()){
             int x = (int) redorc.getHitbox().x - 15;
             int y = (int) redorc.getHitbox().y - 47;
             int width = REDORC_WIDTH_DEFAULT;
@@ -74,11 +80,22 @@ public class EnemyManager {
             g.drawImage(imageToDraw, x, y, width, height, null);
     
             redorc.drawHitbox(g, 0);
+            redorc.drawAttackBox(g, 0);
+        }
+        }
+    }
+
+    public void checkEnemyHit(Rectangle2D.Float attackBox){
+        for(RedOrc redorc : redorcs){
+            if(redorc.isActive()){
+                if(attackBox.intersects(redorc.getHitbox())){
+                    redorc.hurt(10);
+                    return;
+                }
+            }
         }
     }
     
-    
-
     private void loadEnemyImages(){
         redorcArr = new BufferedImage[5][6];// mettre 6 pour le 2ème apres !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.REDORC_SPRITE);

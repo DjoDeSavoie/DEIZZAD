@@ -2,6 +2,9 @@ package entities;
 
 import static utilz.Constants.EnemyConstants.*;
 import static utilz.HelpMethods.*;
+
+import java.awt.geom.Rectangle2D;
+
 import static utilz.Constants.Directions.*;
 
 import main.Game;
@@ -17,12 +20,18 @@ public abstract class Enemy extends Entity {
     protected int walkDir = LEFT;
     protected int tileY;
     protected float attackDistance = Game.TILES_SIZE;
+    protected int maxHealth;
+    protected int currenthealth;
+    protected boolean active = true;
+    protected boolean attackChecked;
 
 
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height); 
         this.enemyType = enemyType;
         initHitbox(x, y, width, height);
+        maxHealth = getMaxHealth(enemyType);
+        currenthealth = maxHealth;
     }
 
     // fonction qui initialise l'entity
@@ -68,9 +77,12 @@ public abstract class Enemy extends Entity {
             animIndex++;
             if(animIndex > GetSpriteAmount(enemyType, enemyState)){
                 animIndex = 0;
+
                 // si l'entity est en train d'attaquer, on le remet en idle
-                if(enemyState == ATTACK)
-                    newState(IDLE);
+                switch (enemyState) {
+                    case ATTACK,HURT -> newState(IDLE);
+                    case DEAD -> active = false;
+                }
             }
         }
     }
@@ -90,6 +102,10 @@ public abstract class Enemy extends Entity {
         return enemyState;
     }
 
+    public boolean isActive(){
+        return active;
+    }
+
     // pour commencer l'anima a 0 et pas au milieu
     protected void newState(int enemyState){
         this.enemyState = enemyState;
@@ -97,13 +113,19 @@ public abstract class Enemy extends Entity {
         animIndex = 0;
     }
 
+    public void hurt(int amount){
+        currenthealth -= amount;
+        if(currenthealth <= 0)
+            newState(DEAD);  
+        else newState(HURT);
+    }
     ///////////////////////Fonctions pour gerer les entity behavior////////////////////////////////////////
 
     // fonction qui gere le comportement de l'entity quand elle voit le player
     protected boolean canSeePlayer(int[][] lvlData, Player player){
         int playerY = (int) (player.getHitbox().y / Game.TILES_SIZE);
         if(playerY == tileY){// si le player est sur la meme ligne que l'entity
-            System.out.println(tileY);
+            //System.out.println(tileY);
             if(isPlayerInRange(player)){// si le player est dans la range de l'entity
                 if(isSightClear(lvlData, hitbox, player.hitbox, tileY)) //si il y'a pas d'obstacle entre l'entity et le player
                     return true;
@@ -130,6 +152,12 @@ public abstract class Enemy extends Entity {
     protected boolean isPlayerInRangeForAttack(Player player){
         int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
         return absValue <= attackDistance;
+    }
+
+    protected void checkEnemyHit(Rectangle2D.Float attackBox, Player player){
+        if(attackBox.intersects(player.hitbox))
+            player.changeHealth(-getEnemyDamage(enemyType));
+            attackChecked = true;
     }
 
 }
