@@ -80,7 +80,7 @@ public abstract class Enemy extends Entity {
 
                 // si l'entity est en train d'attaquer, on le remet en idle
                 switch (enemyState) {
-                    case ATTACK,HURT -> newState(IDLE);
+                    case ATTACK, HURT -> newState(IDLE);
                     case DEAD -> active = false;
                 }
             }
