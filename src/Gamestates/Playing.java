@@ -21,6 +21,13 @@ public class Playing extends State implements Statemethods {
     private LevelManager levelManager;
     private EnemyManager enemyManager;
 
+    private int xLvlOffset;
+    private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
+    private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
+    private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
+    private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
+    private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
+
     public Playing(Game game) {
         super(game);
         initClasses();
@@ -46,13 +53,31 @@ public class Playing extends State implements Statemethods {
     public void update() {
         levelManager.update();
         player.update();
+        checkCloseToboredr();
         enemyManager.update(levelManager.getCurrentLevel().GetLevelData(), player);
+    }
+
+    //pour verifier si le joueur est proche du bord gauche ou droit
+    private void checkCloseToboredr() {
+        int playerX = (int) player.getHitbox().x;
+        int diff = playerX - xLvlOffset;
+        if (diff < leftBorder) {
+            xLvlOffset += diff - leftBorder;
+        } else if (diff > rightBorder) {
+            xLvlOffset += diff - rightBorder;
+        }
+
+        if (xLvlOffset < 0) {
+            xLvlOffset = 0;
+        } else if (xLvlOffset > maxLvlOffsetX) {
+            xLvlOffset = maxLvlOffsetX;
+        }
     }
 
     @Override
     public void draw(Graphics g) {
-        levelManager.draw(g);
-        player.render(g);
+        levelManager.draw(g, xLvlOffset);
+        player.render(g, xLvlOffset);
         enemyManager.draw(g);
     }
 
@@ -72,12 +97,12 @@ public class Playing extends State implements Statemethods {
     public void mouseMoved(MouseEvent e) {
     }
 
-    // @Override
-    // public void mouseclicked(MouseEvent e) {
-    //     if(e.getButton() == MouseEvent.BUTTON1){
-	// 		player.setAttacking(true);
-	// 	}
-    // }
+    @Override
+    public void mouseclicked(MouseEvent e) {
+        if(e.getButton() == MouseEvent.BUTTON1){
+			player.setAttacking(true);
+		}
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
