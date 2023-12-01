@@ -220,7 +220,7 @@ public class Player extends Entity {
         // if(!left && !right && !inAir)
         //     return;
         if(!inAir)
-            if((!left && !right) || (right && !left))
+            if((!left && !right) || (right && left))
                 return;
 		
         //vitesse horizontale a 0
