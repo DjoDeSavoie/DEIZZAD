@@ -141,7 +141,7 @@ public class Player extends Entity {
     //     return mirroredImage;
     // }
 
-    public void render(Graphics g) {
+    public void render(Graphics g, int lvlOffset) {
         BufferedImage imageToDraw = animations[playerAction][aniIndex];
         
         int x = (int) (hitbox.x - xDrawOffset) + flipX;
@@ -154,7 +154,7 @@ public class Player extends Entity {
         //     imageToDraw = getMirroredImage(imageToDraw);
         // }
     
-        g.drawImage(imageToDraw, x, y, width, height, null);
+        g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
         drawHealthBar(g);
         //drawAttackBox(g,0);
         // drawHitbox(g, 0); 
@@ -235,8 +235,11 @@ public class Player extends Entity {
             jump();
 
         //si aucun input n'est recu, on ne fait rien
-        if(!left && !right && !inAir)
-            return;
+        // if(!left && !right && !inAir)
+        //     return;
+        if(!inAir)
+            if((!left && !right) || (right && left))
+                return;
 		
         //vitesse horizontale a 0
         float xSpeed = 0;

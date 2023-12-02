@@ -9,6 +9,7 @@ import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import utilz.LoadSave;
 
 public class Playing extends State implements Statemethods {
 
@@ -18,6 +19,13 @@ public class Playing extends State implements Statemethods {
     private GameOverOverlay gameOverOverlay;
 
     private boolean gameOver = false;
+
+    private int xLvlOffset;
+    private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
+    private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
+    private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
+    private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
+    private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
 
     public Playing(Game game) {
         super(game);
@@ -47,7 +55,25 @@ public class Playing extends State implements Statemethods {
         if(!gameOver){
             levelManager.update();
             player.update();
-            enemyManager.update(levelManager.getCurrentLevel().GetLevelData(), player);
+            checkCloseToboredr();
+        enemyManager.update(levelManager.getCurrentLevel().GetLevelData(), player);
+        }
+    }
+
+    //pour verifier si le joueur est proche du bord gauche ou droit
+    private void checkCloseToboredr() {
+        int playerX = (int) player.getHitbox().x;
+        int diff = playerX - xLvlOffset;
+        if (diff < leftBorder) {
+            xLvlOffset += diff - leftBorder;
+        } else if (diff > rightBorder) {
+            xLvlOffset += diff - rightBorder;
+        }
+
+        if (xLvlOffset < 0) {
+            xLvlOffset = 0;
+        } else if (xLvlOffset > maxLvlOffsetX) {
+            xLvlOffset = maxLvlOffsetX;
         }
     }
 
@@ -56,8 +82,8 @@ public class Playing extends State implements Statemethods {
     }
     @Override
     public void draw(Graphics g) {
-        levelManager.draw(g);
-        player.render(g);
+        levelManager.draw(g, xLvlOffset);
+        player.render(g, xLvlOffset);
         enemyManager.draw(g);
 
         //celui qui fait le menu, si tu fais un if avant celui la stp met un else if pour gameover a la place du if
@@ -104,7 +130,10 @@ public class Playing extends State implements Statemethods {
                 case KeyEvent.VK_SPACE:
                     player.setJump(true);
                     break;
-                case KeyEvent.VK_BACK_SPACE:
+                case KeyEvent.VK_CONTROL:
+                player.setAttacking(true);
+                break;
+            case KeyEvent.VK_BACK_SPACE:
                     Gamestate.state = Gamestate.MENU;
                     break;
                 default:
