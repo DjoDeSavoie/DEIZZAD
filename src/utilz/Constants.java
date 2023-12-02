@@ -52,12 +52,23 @@ public class Constants {
 
     public static class EnemyConstants {
         public static final int REDORC = 0;
+        //enum !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
 
+        //enum pour les states
         public static final int IDLE = 0;
         public static final int WALKING = 1;
         public static final int ATTACK = 2;
         public static final int HURT = 3;
         public static final int DEAD = 4;
+        
+        // enum EnemyState{
+        //     IDLE,
+        //     WALKING,
+        //     ATTACK,
+        //     HURT,
+        //     DEAD
+        // }
 
         public static final int REDORC_WIDTH_DEFAULT = 96;
         public static final int REDORC_HEIGHT_DEFAULT = 98;

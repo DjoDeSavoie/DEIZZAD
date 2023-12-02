@@ -3,6 +3,9 @@
 package utilz;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
+import java.awt.Graphics2D;
 
 import main.Game;
 
@@ -110,5 +113,19 @@ public class HelpMethods {
 			return true;
 		}
 	}
+
+	// Cette méthode est utilisée pour obtenir une version miroir d'un BufferedImage
+    public static BufferedImage getMirroredImage(BufferedImage image) {
+        AffineTransform at = AffineTransform.getScaleInstance(-1, 1);
+        at.translate(-image.getWidth(), 0);
+    
+        BufferedImage mirroredImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = mirroredImage.createGraphics();
+        g2d.setTransform(at);
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+    
+        return mirroredImage;
+    }
 
 }

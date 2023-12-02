@@ -19,8 +19,8 @@ public class Menu extends State implements Statemethods {
 
         @Override
         public void draw(Graphics g) {
-                //g.setColor(Color.BLACK);
-                //g.drawString("MENU", Game.GAME_WIDTH / 2, 200);
+                g.setColor(Color.BLACK);
+                g.drawString("MENU", Game.GAME_WIDTH / 2, 200);
         }
 
         @Override

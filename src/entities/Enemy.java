@@ -5,6 +5,9 @@ import static utilz.HelpMethods.*;
 
 import java.awt.geom.Rectangle2D;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 import static utilz.Constants.Directions.*;
 
 import main.Game;
@@ -24,6 +27,8 @@ public abstract class Enemy extends Entity {
     protected int currenthealth;
     protected boolean active = true;
     protected boolean attackChecked;
+    protected Rectangle2D.Float attackBox;
+    protected int attackBoxOffsetX;
 
 
     public Enemy(float x, float y, int width, int height, int enemyType) {
@@ -34,11 +39,71 @@ public abstract class Enemy extends Entity {
         currenthealth = maxHealth;
     }
 
+    // fonction qui initialise l'attackBox
+    protected void initAttackBox(){
+        attackBox = new Rectangle2D.Float(x,y,(int)(20 * Game.SCALE), (int)(20 * Game.SCALE));
+        attackBoxOffsetX = (int)(20*Game.SCALE);
+    }
+    
+    protected void updateAttackBox(){
+        if(walkDir == LEFT)
+            attackBox.x = hitbox.x - attackBoxOffsetX;
+        else if(walkDir == RIGHT)
+            attackBox.x = hitbox.x + attackBoxOffsetX;
+        attackBox.y = hitbox.y;
+    }
+
+    public void drawAttackBox(Graphics g, int xLvlOffset) {
+        g.setColor(Color.red);
+        g.drawRect((int) attackBox.x - xLvlOffset, (int) attackBox.y,(int) attackBox.width,(int) attackBox.height);
+    }
+
     // fonction qui initialise l'entity
     protected void firstUpdateCheck(int[][] lvlData){
         if(!isEntityOnFloor(hitbox, lvlData))
             isAir = true;
         firstUpdate = false;
+    }
+    
+    public void update(int[][] lvlData, Player player){
+        updateMove(lvlData, player);
+        updateAnimationTick();
+        updateAttackBox();
+    }
+
+    protected void updateMove(int[][] lvlData, Player player){
+        if(firstUpdate){
+            firstUpdateCheck(lvlData);
+        }
+        if(isAir) {
+            updateInAir(lvlData);
+        }else {
+            switch (enemyState) {
+                case IDLE:
+                    newState(WALKING);
+                    break;
+                case WALKING:
+                    if(canSeePlayer(lvlData, player))
+                        turnToPlayer(player);
+                    if (isPlayerInRangeForAttack(player))
+                        newState(ATTACK);   
+
+                    move(lvlData);
+                    break;
+                case ATTACK:
+                    if(animIndex == 0)
+                        attackChecked = false;
+
+                    if(animIndex == 3 && !attackChecked)
+                        checkEnemyHit(attackBox, player);
+                    break;
+                case HURT:
+                    if(animIndex == GetSpriteAmount(enemyType, enemyState)-1)
+                        newState(WALKING);
+                    break;
+                
+            }
+        } 
     }
 
     // fonction qui permet de savoir si l'entity est en l'air ou non
@@ -159,5 +224,16 @@ public abstract class Enemy extends Entity {
             player.changeHealth(-getEnemyDamage(enemyType));
             attackChecked = true;
     }
+
+    // reset l'enemy
+    public void resetEnemy() {
+		hitbox.x = x;
+		hitbox.y = y;
+		firstUpdate = true;
+		currenthealth = maxHealth;
+		newState(IDLE);
+		active = true;
+		fallSpeed = 0;
+	}
 
 }

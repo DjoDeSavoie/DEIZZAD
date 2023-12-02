@@ -11,8 +11,6 @@ import Gamestates.Playing;
 
 
 import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import main.Game;
@@ -42,18 +40,25 @@ public class Player extends Entity {
     
     private BufferedImage healthBar;
 
-    // private int statusBarWidth = 100;
-    // private int statusBarHeight = 10;
-    // private int statusBarX = 10;
-    // private int statusBarY = 10;
+    //dimensions de l'image
+    private int statusBarWidth = (int) (190 * Game.SCALE);
+	private int statusBarHeight = (int) (35 * Game.SCALE);
+	private int statusBarX = (int) (10 * Game.SCALE);
+	private int statusBarY = (int) (10 * Game.SCALE);
 
-    private int healthBarWidth = (int) (200 * Game.SCALE);
-    private int healthBarHeight = (int) (60 * Game.SCALE);
-    private int healthBarX = (int) (10 * Game.SCALE);
-    private int healthBarY = (int) (10 * Game.SCALE);
+    //dimensions de la barre de vie
+	private int healthBarWidth = (int) (150 * Game.SCALE);
+	private int healthBarHeight = (int) (4 * Game.SCALE);
+	private int healthBarX = (int) (34 * Game.SCALE);
+	private int healthBarY = (int) (14 * Game.SCALE);
+
+	// private int healthBarWidth = (int) (185 * Game.SCALE);
+	// private int healthBarHeight = (int) (40 * Game.SCALE);
+	// private int healthBarX = (int) (10 * Game.SCALE);
+	// private int healthBarY = (int) (10 * Game.SCALE);
     
     private int maxHealth = 100;
-    private int currentHealth = maxHealth+20;
+    private int currentHealth = maxHealth;
     private int healthWidth = healthBarWidth;
 
     //attack box
@@ -80,8 +85,12 @@ public class Player extends Entity {
     }
 
     public void update() {
-
         updateHealthBar();
+
+        if(currentHealth <= 0){
+            playing.setGameOver(true);
+            return;
+        }
         updateAttackBox();
 		updatePos();
         if(attacking)
@@ -99,23 +108,24 @@ public class Player extends Entity {
 
     private void updateAttackBox() {
         if(left)
-            attackBox.x = hitbox.x - hitbox.width- (int) (5 * Game.SCALE);
+            attackBox.x = hitbox.x - hitbox.width - (int) (5 * Game.SCALE);
         else if(right)
             attackBox.x = hitbox.x + hitbox.width + (int) (5 * Game.SCALE);
         attackBox.y = hitbox.y + (int) (10 * Game.SCALE);
     }
 
+    //permet de mettre a jour la taille de la barre de vie
     private void updateHealthBar() {
-        healthWidth = (int) (healthBarWidth * ((float) currentHealth / (float) maxHealth));
+        healthWidth = (int) (healthBarWidth * ( (float) currentHealth / (float) maxHealth));
     }
 
     public void changeHealth(int value){
         currentHealth += value;
-        if(currentHealth >= maxHealth)
-            currentHealth = maxHealth;
         if(currentHealth <= 0) 
             currentHealth = 0;
             //gameOver();
+        else if(currentHealth >= maxHealth)
+            currentHealth = maxHealth;
     }
 
     // private BufferedImage getMirroredImage(BufferedImage image) {
@@ -146,7 +156,7 @@ public class Player extends Entity {
     
         g.drawImage(imageToDraw, x, y, width, height, null);
         drawHealthBar(g);
-        drawAttackBox(g,0);
+        //drawAttackBox(g,0);
         // drawHitbox(g, 0); 
     }
 
@@ -156,9 +166,12 @@ public class Player extends Entity {
     }
     
     private void drawHealthBar(Graphics g) {
-        g.drawImage(healthBar, healthBarX, healthBarY, healthBarWidth, healthBarHeight, null);
-        g.setColor(java.awt.Color.RED);
-        g.fillRect(healthBarX + (int)(35 * Game.SCALE) , healthBarY + (int)(15 * Game.SCALE), healthWidth-120, 10);
+        g.drawImage(healthBar, statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
+		g.setColor(java.awt.Color.RED);
+		g.fillRect(healthBarX + statusBarX, healthBarY+ statusBarY, healthWidth, healthBarHeight);
+        // g.drawImage(healthBar, healthBarX, healthBarY, healthBarWidth, healthBarHeight, null);
+        // g.setColor(java.awt.Color.RED);
+        // g.fillRect(healthBarX + (int)(35 * Game.SCALE) , healthBarY + (int)(15 * Game.SCALE), healthWidth, 10);
     }
 
 	private void updateAnimationTick(){
@@ -205,6 +218,11 @@ public class Player extends Entity {
     private void resetAniTick(){
         aniTick = 0;
         aniIndex = 0;
+    }
+
+    //pour checkEnemyHit
+    public int getAnimaIndex() {
+        return aniIndex;
     }
 
 
@@ -349,6 +367,22 @@ public class Player extends Entity {
     public void setJump(boolean jump) {
         this.jump = jump;
     }
+
+    //reset toutes les variables du joueur
+    public void resetAll() {
+		resetDirBooleans();
+		inAir = false;
+		attacking = false;
+		moving = false;
+		playerAction = IDLE;
+		currentHealth = maxHealth;
+
+		hitbox.x = x;
+		hitbox.y = y;
+
+		if (!isEntityOnFloor(hitbox, lvlData))
+			inAir = true;
+	}
 
     
 }
