@@ -76,8 +76,8 @@ public class Constants {
         public static final int REDORC_WIDTH = (int)(REDORC_WIDTH_DEFAULT * Game.SCALE);
         public static final int REDORC_HEIGHT = (int)(REDORC_HEIGHT_DEFAULT * Game.SCALE);
 
-        public static final int REDORC_DRAWOFFSET_X = (int)(26 * Game.SCALE);
-        public static final int REDORC_DRAWOFFSET_Y = (int)(9 * Game.SCALE);
+        public static final int REDORC_DRAWOFFSET_X = (int)(15 * Game.SCALE);
+        public static final int REDORC_DRAWOFFSET_Y = (int)(32 * Game.SCALE);
 
         public static int GetSpriteAmount(int enemyType, int enemyState){
             switch(enemyType){

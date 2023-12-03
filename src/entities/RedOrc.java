@@ -35,10 +35,10 @@ public class RedOrc extends Enemy {
         }
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int xLvlOffset) {
         // Logique de dessin spécifique à RedOrc
-        int x = (int) getHitbox().x - 15;
-        int y = (int) getHitbox().y - 47;
+        int x = (int) getHitbox().x - xLvlOffset - REDORC_DRAWOFFSET_X;
+        int y = (int) getHitbox().y - REDORC_DRAWOFFSET_Y ;
         int width = REDORC_WIDTH_DEFAULT;
         int height = REDORC_HEIGHT_DEFAULT;
 

@@ -42,11 +42,11 @@ public class EnemyManager {
         // on update les autres enemies
     }
 
-    public void draw(Graphics g){
+    public void draw(Graphics g, int xLvlOffset){
         // on dessine les redorcs
         for (RedOrc redorc : redorcs) {
             if (redorc.isActive()) {
-                redorc.draw(g);
+                redorc.draw(g, xLvlOffset);
             }
         }
         // on dessine les autres enemies
@@ -67,7 +67,7 @@ public class EnemyManager {
                         }
                     });
 
-                    timer.setRepeats(false); // Ne répétez pas le timer
+                    timer.setRepeats(false); 
                     timer.start();
 
                     return;

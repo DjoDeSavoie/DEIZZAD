@@ -84,7 +84,7 @@ public class Playing extends State implements Statemethods {
     public void draw(Graphics g) {
         levelManager.draw(g, xLvlOffset);
         player.render(g, xLvlOffset);
-        enemyManager.draw(g);
+        enemyManager.draw(g, xLvlOffset);
 
         //celui qui fait le menu, si tu fais un if avant celui la stp met un else if pour gameover a la place du if
         if(gameOver)
