@@ -108,9 +108,9 @@ public class Player extends Entity {
 
     private void updateAttackBox() {
         if(left)
-            attackBox.x = hitbox.x - hitbox.width - (int) (5 * Game.SCALE);
+            attackBox.x = hitbox.x - hitbox.width - (int) (-10 * Game.SCALE);
         else if(right)
-            attackBox.x = hitbox.x + hitbox.width + (int) (5 * Game.SCALE);
+            attackBox.x = hitbox.x + hitbox.width + (int) (- 10 * Game.SCALE);
         attackBox.y = hitbox.y + (int) (10 * Game.SCALE);
     }
 
@@ -154,10 +154,10 @@ public class Player extends Entity {
         //     imageToDraw = getMirroredImage(imageToDraw);
         // }
     
-        g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
+        g.drawImage(imageToDraw, x - lvlOffset, y, width, height, null);
         drawHealthBar(g);
         //drawAttackBox(g,0);
-        // drawHitbox(g, 0); 
+        //drawHitbox(g, 0); 
     }
 
     private void drawAttackBox(Graphics g, int offset) {
