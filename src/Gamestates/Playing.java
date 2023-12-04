@@ -10,6 +10,7 @@ import entities.Player;
 import levels.LevelManager;
 import main.Game;
 import utilz.LoadSave;
+import Gamestates.Gamestate;
 
 public class Playing extends State implements Statemethods {
 
