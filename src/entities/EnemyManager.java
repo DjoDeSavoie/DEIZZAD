@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.awt.geom.Rectangle2D;
 
 import utilz.LoadSave;
+import levels.Level;
 import Gamestates.Playing;
 
 public class EnemyManager {
@@ -20,13 +21,12 @@ public class EnemyManager {
 
     public EnemyManager(Playing playing){
         this.playing = playing;
-        addEnemies();
     }
 
     // on ajoute les enemies a partir des fichiers images
-    private void addEnemies(){
+    public void LoadEnemies(Level level){
         // on ajoute les redorcs
-        redorcs = LoadSave.GetRedOrc();
+        redorcs = level.getRedOrcs();
         // System.out.println("enemies1 size : " + enemies1.size());
 
         // on ajoute les autres enemies
@@ -34,11 +34,16 @@ public class EnemyManager {
 
     // mise a jour des enemies
     public void update(int[][] lvlData, Player player){
+        boolean allEnemiesDead = false;
         //on update les redorcs
-        for(RedOrc redorc : redorcs){
-            if(redorc.isActive())
+        for(RedOrc redorc : redorcs)
+            if(redorc.isActive()){
                 redorc.update(lvlData, player);
-        }
+                allEnemiesDead = true;
+            }
+        if(!allEnemiesDead)
+            playing.setLevelCompleted(true);
+        
         // on update les autres enemies
     }
 

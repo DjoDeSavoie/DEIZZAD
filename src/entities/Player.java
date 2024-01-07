@@ -12,6 +12,7 @@ import Gamestates.Playing;
 
 import java.awt.image.BufferedImage;
 import java.awt.geom.Rectangle2D;
+import java.awt.Point;
 
 import main.Game;
 
@@ -78,6 +79,13 @@ public class Player extends Entity {
         loadAnimation();
         initHitbox(x, y, 26 * Game.SCALE, 30 * Game.SCALE);
         initAttackBox();
+    }
+
+    public void setSpawnPos(Point s) {
+        this.x = s.x;
+        this.y = s.y;
+        hitbox.x = x;
+        hitbox.y = y;
     }
 
     private void initAttackBox() {

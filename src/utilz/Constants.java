@@ -13,6 +13,11 @@ public class Constants {
             public static final int B_WIDTH = (int)(B_WIDTH_DEFAULT * Game.SCALE);
             public static final int B_HEIGHT = (int)(B_HEIGHT_DEFAULT * Game.SCALE);
         }
+        public static class IMGButtons {
+			public static final int IMG_DEFAULT_SIZE = 56;
+			public static final int IMG_SIZE = (int) (IMG_DEFAULT_SIZE * Game.SCALE);
+
+		}
     }
 
     public static final float GRAVITY = 0.04f * Game.SCALE;

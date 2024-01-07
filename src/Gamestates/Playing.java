@@ -9,6 +9,7 @@ import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import ui.EndLevelOverlay;
 import utilz.LoadSave;
 import Gamestates.Gamestate;
 
@@ -18,27 +19,50 @@ public class Playing extends State implements Statemethods {
     private LevelManager levelManager;
     private EnemyManager enemyManager;
     private GameOverOverlay gameOverOverlay;
-
-    private boolean gameOver = false;
+    private EndLevelOverlay endLevelOverlay;
+    private boolean gameOver;
+    private boolean levelComplete;
 
     private int xLvlOffset;
     private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
     private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
-    private int lvlTilesWide = LoadSave.GetLevelData()[0].length;
-    private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
-    private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
+    private int maxLvlOffsetX;
 
     public Playing(Game game) {
         super(game);
         initClasses();
+        calculatelvlOffset();
+        loadStartLevel();
     }
 
+    private void calculatelvlOffset() {
+        maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
+    }
+
+    public void loadNextLevel() {
+		resetAll();
+		levelManager.loadNextLevel();
+		player.setSpawnPos(levelManager.getCurrentLevel().getPlayerSpawn());
+	}
+
+    // charge les enemies du premier level
+	private void loadStartLevel() {
+		enemyManager.LoadEnemies(levelManager.getCurrentLevel());
+	}
+
+    public void setMaxLvlOffset(int LvlOffset) {
+        this.maxLvlOffsetX = LvlOffset;
+    }
+
+    // initialise toutes les classes relatives au jeu
     private void initClasses() {
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this);
         player = new Player(200, 200, (int) (75 * Game.SCALE), (int) (73 * Game.SCALE), this);
-        player.loadlvlData(levelManager.getCurrentLevel().GetLevelData());
+        player.loadlvlData(levelManager.getCurrentLevel().getLevelData());
+        player.setSpawnPos(levelManager.getCurrentLevel().getPlayerSpawn());
         gameOverOverlay = new GameOverOverlay(this);
+        endLevelOverlay = new EndLevelOverlay(this);
     }
 
     public void windowFocusLost() {
@@ -53,12 +77,18 @@ public class Playing extends State implements Statemethods {
     public void update() {
         //celui qui fait menu juste decommente cette ligne pour le if paused et supp celle d'en bas
         //if(!paused && !gameOver){
-        if(!gameOver){
+        if (levelComplete) {
+            endLevelOverlay.update();
+        } else if(!gameOver){
             levelManager.update();
             player.update();
             checkCloseToboredr();
-        enemyManager.update(levelManager.getCurrentLevel().GetLevelData(), player);
+            enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
         }
+    }
+
+    public void setLevelCompleted(boolean levelCompleted) {
+        this.levelComplete = levelCompleted;
     }
 
     //pour verifier si le joueur est proche du bord gauche ou droit
@@ -90,6 +120,8 @@ public class Playing extends State implements Statemethods {
         //celui qui fait le menu, si tu fais un if avant celui la stp met un else if pour gameover a la place du if
         if(gameOver)
             gameOverOverlay.draw(g);
+        else if (levelComplete)
+            endLevelOverlay.draw(g);
     }
 
     public void checkEnemyHit(Rectangle2D.Float attackBox) {
@@ -98,14 +130,20 @@ public class Playing extends State implements Statemethods {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(!gameOver && levelComplete)
+            endLevelOverlay.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if(!gameOver && levelComplete)
+            endLevelOverlay.mouseReleased(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        if(!gameOver && levelComplete)
+            endLevelOverlay.mouseMoved(e);
     }
 
     @Override
@@ -163,8 +201,13 @@ public class Playing extends State implements Statemethods {
     public void resetAll() {
 		gameOver = false;
 		//paused = false;
+        levelComplete = false;
 		player.resetAll();
 		enemyManager.resetAllEnemies();
 	}
+
+    public EnemyManager getEnemyManager() {
+        return enemyManager;
+    }
 
 }

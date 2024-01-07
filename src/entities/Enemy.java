@@ -42,7 +42,7 @@ public abstract class Enemy extends Entity {
     // fonction qui initialise l'attackBox
     protected void initAttackBox(){
         attackBox = new Rectangle2D.Float(x,y,(int)(20 * Game.SCALE), (int)(20 * Game.SCALE));
-        attackBoxOffsetX = (int)(20*Game.SCALE);
+        attackBoxOffsetX = (int)(20*Game.SCALE); 
     }
     
     protected void updateAttackBox(){
@@ -83,11 +83,11 @@ public abstract class Enemy extends Entity {
                     newState(WALKING);
                     break;
                 case WALKING:
-                    if(canSeePlayer(lvlData, player))
+                    if(canSeePlayer(lvlData, player)){
                         turnToPlayer(player);
                     if (isPlayerInRangeForAttack(player))
                         newState(ATTACK);   
-
+                    }
                     move(lvlData);
                     break;
                 case ATTACK:
