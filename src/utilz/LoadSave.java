@@ -1,23 +1,12 @@
 package utilz;
-
-
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-
-import static utilz.Constants.EnemyConstants.*;
-
-import entities.RedOrc;
-import main.Game;
-
-
 
 public class LoadSave {
 

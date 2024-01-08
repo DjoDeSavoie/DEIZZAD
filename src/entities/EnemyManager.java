@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.awt.geom.Rectangle2D;
 
-import utilz.LoadSave;
 import levels.Level;
 import Gamestates.Playing;
 

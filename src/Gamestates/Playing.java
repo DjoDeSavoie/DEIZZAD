@@ -10,9 +10,6 @@ import entities.Player;
 import levels.LevelManager;
 import main.Game;
 import ui.EndLevelOverlay;
-import utilz.LoadSave;
-import Gamestates.Gamestate;
-
 public class Playing extends State implements Statemethods {
 
     private Player player;
