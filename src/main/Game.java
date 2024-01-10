@@ -1,12 +1,5 @@
 package main;
 
-// import entities.Enemy;
-// import entities.EnemyManager;
-// import entities.Player;
-// import levels.LevelManager;
-// import objects.ObjectManager;
-// import java.awt.geom.Rectangle2D;
-
 import java.awt.Graphics;
 import Gamestates.Playing;
 import Gamestates.Gamestate;

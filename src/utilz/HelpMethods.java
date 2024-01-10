@@ -136,7 +136,6 @@ public class HelpMethods {
         return mirroredImage;
     }
 
-
     public static ArrayList<RedOrc> GetRedOrc(BufferedImage img){ 
         ArrayList<RedOrc> list = new ArrayList<>();
          for(int j = 0; j < img.getHeight(); j++)

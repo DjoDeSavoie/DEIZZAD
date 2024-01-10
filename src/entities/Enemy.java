@@ -30,6 +30,8 @@ public abstract class Enemy extends Entity {
     protected Rectangle2D.Float attackBox;
     protected int attackBoxOffsetX;
 
+    // draw virtuelle pour les enemies
+    public abstract void draw(Graphics g, int xLvlOffset);
 
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height); 

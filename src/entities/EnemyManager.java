@@ -15,8 +15,8 @@ public class EnemyManager {
 
     private Playing playing;
 
-    //on crée un tableau d'ennemis pour chaque type d'ennemi
-    private ArrayList<RedOrc> redorcs = new ArrayList<>();
+    //tableau d'enemies
+    private ArrayList<? extends Enemy> enemies = new ArrayList<>(); 
 
     public EnemyManager(Playing playing){
         this.playing = playing;
@@ -24,42 +24,36 @@ public class EnemyManager {
 
     // on ajoute les enemies a partir des fichiers images
     public void LoadEnemies(Level level){
-        // on ajoute les redorcs
-        redorcs = level.getRedOrcs();
-        // System.out.println("enemies1 size : " + enemies1.size());
-
-        // on ajoute les autres enemies
+        enemies = level.getEnemies(); 
+        // System.out.println("enemies size : " + enemies.size());
     }
 
     // mise a jour des enemies
     public void update(int[][] lvlData, Player player){
-        boolean allEnemiesDead = false;
-        //on update les redorcs
-        for(RedOrc redorc : redorcs)
-            if(redorc.isActive()){
-                redorc.update(lvlData, player);
-                allEnemiesDead = true;
+        boolean OneRemainingEnemy = false;
+        //on update les enemies
+        for(Enemy enemy : enemies) 
+            if(enemy.isActive()){
+                enemy.update(lvlData, player);
+                OneRemainingEnemy = true;
             }
-        if(!allEnemiesDead)
+        if(!OneRemainingEnemy)
             playing.setLevelCompleted(true);
-        
-        // on update les autres enemies
     }
 
     public void draw(Graphics g, int xLvlOffset){
-        // on dessine les redorcs
-        for (RedOrc redorc : redorcs) {
-            if (redorc.isActive()) {
-                redorc.draw(g, xLvlOffset);
+        // on dessine les enemies
+        for (Enemy enemy : enemies) {
+            if (enemy.isActive()) {
+                enemy.draw(g, xLvlOffset);
             }
         }
-        // on dessine les autres enemies
     }
 
     public void checkEnemyHit(Rectangle2D.Float attackBox) {
-        for (RedOrc redorc : redorcs) {
-            if (redorc.isActive()) {
-                if (attackBox.intersects(redorc.getHitbox())) {
+        for (Enemy enemy : enemies) {
+            if (enemy.isActive()) {
+                if (attackBox.intersects(enemy.getHitbox())) {
                     // Attendre que l'animation de l'attaque soit terminée pour infliger des dégâts avec un timer
 
                     int delay = 500; // Délai en millisecondes
@@ -67,7 +61,7 @@ public class EnemyManager {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             // Le code ici sera exécuté après le délai spécifié
-                            redorc.hurt(10);
+                            enemy.hurt(10);
                         }
                     });
 
@@ -82,7 +76,7 @@ public class EnemyManager {
 
     // reset tous les enemies
     public void resetAllEnemies() {
-		for (RedOrc redorc : redorcs)
-			redorc.resetEnemy();
+		for (Enemy enemy : enemies)
+			enemy.resetEnemy();
 	}
 }

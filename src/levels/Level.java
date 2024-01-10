@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import entities.RedOrc;
+import entities.Enemy;
 import main.Game;
 import static utilz.HelpMethods.GetLevelData;
 import static utilz.HelpMethods.GetRedOrc;
@@ -14,7 +14,7 @@ public class Level {
 
 	private BufferedImage img;
 	private int[][] lvlData;
-	private ArrayList<RedOrc> redorcs;
+	private ArrayList<? extends Enemy> enemies;
 	private int lvlTilesWide;
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
@@ -39,8 +39,9 @@ public class Level {
 		maxLvlOffsetX = Game.TILES_SIZE * maxTilesOffset;
 	}
 
+	// dans le cas ou on a plusieurs types d'ennemis, on concatene les tableaux
 	private void createEnemies() {
-		redorcs = GetRedOrc(img);
+		enemies = GetRedOrc(img);
 	}
 
 	private void createLevelData() {
@@ -59,9 +60,10 @@ public class Level {
 		return maxLvlOffsetX;
 	}
 
-	public ArrayList<RedOrc> getRedOrcs() {
-		return redorcs;
-	}
+	// retourne les ennemis (dans le cas ou on a plusieurs types d'ennemis, on concatene les tableaux)
+	public ArrayList<? extends Enemy> getEnemies() {
+        return enemies;
+    }
 
 	public Point getPlayerSpawn() {
 		return playerSpawn;
