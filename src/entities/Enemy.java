@@ -1,3 +1,8 @@
+/**
+ * @file Enemy.java
+ * @brief Contient la définition de la classe abstraite Enemy.
+ */
+
 package entities;
 
 import static utilz.Constants.EnemyConstants.*;
@@ -12,6 +17,9 @@ import static utilz.Constants.Directions.*;
 
 import main.Game;
 
+/**
+ * @brief Classe abstraite représentant un ennemi dans le jeu.
+ */
 public abstract class Enemy extends Entity {
     protected int animIndex, enemyState, enemyType;
     protected int animTick, animSpeed = 45;
@@ -30,9 +38,21 @@ public abstract class Enemy extends Entity {
     protected Rectangle2D.Float attackBox;
     protected int attackBoxOffsetX;
 
-    // draw virtuelle pour les enemies
+    /**
+     * @brief Fonction abstraite pour dessiner l'ennemi.
+     * @param g Objet Graphics utilisé pour dessiner.
+     * @param xLvlOffset Décalage horizontal du niveau.
+     */
     public abstract void draw(Graphics g, int xLvlOffset);
 
+    /**
+     * @brief Constructeur de la classe Enemy.
+     * @param x Coordonnée X de l'ennemi.
+     * @param y Coordonnée Y de l'ennemi.
+     * @param width Largeur de l'ennemi.
+     * @param height Hauteur de l'ennemi.
+     * @param enemyType Type d'ennemi.
+     */
     public Enemy(float x, float y, int width, int height, int enemyType) {
         super(x, y, width, height); 
         this.enemyType = enemyType;
@@ -41,12 +61,17 @@ public abstract class Enemy extends Entity {
         currenthealth = maxHealth;
     }
 
-    // fonction qui initialise l'attackBox
+    /**
+     * @brief Initialise la boîte d'attaque de l'ennemi.
+     */
     protected void initAttackBox(){
         attackBox = new Rectangle2D.Float(x,y,(int)(20 * Game.SCALE), (int)(20 * Game.SCALE));
         attackBoxOffsetX = (int)(20*Game.SCALE); 
     }
-    
+
+    /**
+     * @brief Met à jour la boîte d'attaque de l'ennemi.
+     */
     protected void updateAttackBox(){
         if(walkDir == LEFT)
             attackBox.x = hitbox.x - attackBoxOffsetX;
@@ -55,24 +80,42 @@ public abstract class Enemy extends Entity {
         attackBox.y = hitbox.y;
     }
 
+    /**
+     * @brief Dessine la boîte d'attaque de l'ennemi.
+     * @param g Objet Graphics utilisé pour dessiner.
+     * @param xLvlOffset Décalage horizontal du niveau.
+     */
     public void drawAttackBox(Graphics g, int xLvlOffset) {
         g.setColor(Color.red);
         g.drawRect((int) attackBox.x - xLvlOffset, (int) attackBox.y,(int) attackBox.width,(int) attackBox.height);
     }
 
-    // fonction qui initialise l'entity
+    /**
+     * @brief Initialise l'entity.
+     * @param lvlData Tableau représentant les données du niveau.
+     */
     protected void firstUpdateCheck(int[][] lvlData){
         if(!isEntityOnFloor(hitbox, lvlData))
             isAir = true;
         firstUpdate = false;
     }
-    
+
+    /**
+     * @brief Met à jour l'ennemi.
+     * @param lvlData Tableau représentant les données du niveau.
+     * @param player Objet représentant le joueur.
+     */
     public void update(int[][] lvlData, Player player){
         updateMove(lvlData, player);
         updateAnimationTick();
         updateAttackBox();
     }
 
+    /**
+     * @brief Met à jour le mouvement de l'ennemi.
+     * @param lvlData Tableau représentant les données du niveau.
+     * @param player Objet représentant le joueur.
+     */
     protected void updateMove(int[][] lvlData, Player player){
         if(firstUpdate){
             firstUpdateCheck(lvlData);
@@ -108,7 +151,10 @@ public abstract class Enemy extends Entity {
         } 
     }
 
-    // fonction qui permet de savoir si l'entity est en l'air ou non
+    /**
+     * @brief Met à jour la position de l'ennemi en l'air.
+     * @param lvlData Tableau représentant les données du niveau.
+     */
     protected void updateInAir(int[][] lvlData){
         if(CanMoveHere(hitbox.x, hitbox.y, hitbox.width, hitbox.height, lvlData)){
             hitbox.y += fallSpeed;
@@ -120,7 +166,10 @@ public abstract class Enemy extends Entity {
         }
     }
 
-    // fonction qui gere les deplacements
+    /**
+     * @brief Gère le mouvement de l'ennemi.
+     * @param lvlData Tableau représentant les données du niveau.
+     */
     protected void move(int[][] lvlData){
         float xSpeed = 0;
         if(walkDir == LEFT)
@@ -136,7 +185,9 @@ public abstract class Enemy extends Entity {
         changeWalkDir();
     }
 
-    // fonction qui gere les animations
+    /**
+     * @brief Met à jour le compteur d'animation de l'ennemi.
+     */
     protected void updateAnimationTick(){
         animTick++;
         if(animTick >= animSpeed){
@@ -154,6 +205,9 @@ public abstract class Enemy extends Entity {
         }
     }
 
+    /**
+     * @brief Change la direction de marche de l'ennemi.
+     */
     protected void changeWalkDir(){
         if(walkDir == LEFT)
             walkDir = RIGHT;
@@ -161,38 +215,62 @@ public abstract class Enemy extends Entity {
             walkDir = LEFT;
     }
 
+    /**
+     * @brief Renvoie l'indice d'animation de l'ennemi.
+     * @return Indice d'animation de l'ennemi.
+     */
     public int getAnimaIndex(){
         return animIndex;
     }
 
+    /**
+     * @brief Renvoie l'état de l'ennemi.
+     * @return État de l'ennemi.
+     */
     public int getEnemyState(){
         return enemyState;
     }
 
+    /**
+     * @brief Vérifie si l'ennemi est actif.
+     * @return True si l'ennemi est actif, sinon False.
+     */
     public boolean isActive(){
         return active;
     }
 
-    // pour commencer l'anima a 0 et pas au milieu
+    /**
+     * @brief Initialise l'état de l'ennemi.
+     * @param enemyState Nouvel état de l'ennemi.
+     */
     protected void newState(int enemyState){
         this.enemyState = enemyState;
         animTick = 0;
         animIndex = 0;
     }
 
+    /**
+     * @brief Inflige des dégâts à l'ennemi.
+     * @param amount Quantité de dégâts à infliger.
+     */
     public void hurt(int amount){
         currenthealth -= amount;
         if(currenthealth <= 0)
             newState(DEAD);  
         else newState(HURT);
     }
+
     ///////////////////////Fonctions pour gerer les entity behavior////////////////////////////////////////
 
-    // fonction qui gere le comportement de l'entity quand elle voit le player
+    /**
+     * @brief Vérifie si l'ennemi peut voir le joueur.
+     * @param lvlData Tableau représentant les données du niveau.
+     * @param player Objet représentant le joueur.
+     * @return True si l'ennemi peut voir le joueur, sinon False.
+     */
     protected boolean canSeePlayer(int[][] lvlData, Player player){
         int playerY = (int) (player.getHitbox().y / Game.TILES_SIZE);
         if(playerY == tileY){// si le player est sur la meme ligne que l'entity
-            //System.out.println(tileY);
             if(isPlayerInRange(player)){// si le player est dans la range de l'entity
                 if(isSightClear(lvlData, hitbox, player.hitbox, tileY)) //si il y'a pas d'obstacle entre l'entity et le player
                     return true;
@@ -201,7 +279,10 @@ public abstract class Enemy extends Entity {
         return false;
     }
 
-    // fonction qui gere le comportement de l'entity quand elle voit le player
+    /**
+     * @brief Tourne l'ennemi en direction du joueur.
+     * @param player Objet représentant le joueur.
+     */
     protected void turnToPlayer(Player player){
         if(player.hitbox.x < hitbox.x)
             walkDir = LEFT;
@@ -209,33 +290,48 @@ public abstract class Enemy extends Entity {
             walkDir = RIGHT;
     }
 
-    // fonction qui gere le comportement de l'entity si le player est dans la meme ligne 
+    /**
+     * @brief Vérifie si le joueur est dans la même ligne que l'ennemi.
+     * @param player Objet représentant le joueur.
+     * @return True si le joueur est dans la même ligne, sinon False.
+     */
     protected boolean isPlayerInRange(Player player){
         int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
         return absValue <= attackDistance * 5;
     }
 
-    // fonction qui gere le comportement de l'entity si le player est dans la meme ligne pour l'attaque
+    /**
+     * @brief Vérifie si le joueur est dans la même ligne pour l'attaque.
+     * @param player Objet représentant le joueur.
+     * @return True si le joueur est dans la même ligne pour l'attaque, sinon False.
+     */
     protected boolean isPlayerInRangeForAttack(Player player){
         int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
         return absValue <= attackDistance;
     }
 
+    /**
+     * @brief Vérifie si l'ennemi a touché le joueur avec son attaque.
+     * @param attackBox Boîte d'attaque de l'ennemi.
+     * @param player Objet représentant le joueur.
+     */
     protected void checkEnemyHit(Rectangle2D.Float attackBox, Player player){
         if(attackBox.intersects(player.hitbox))
             player.changeHealth(-getEnemyDamage(enemyType));
             attackChecked = true;
     }
 
-    // reset l'enemy
+    /**
+     * @brief Réinitialise l'ennemi à son état initial.
+     */
     public void resetEnemy() {
-		hitbox.x = x;
-		hitbox.y = y;
-		firstUpdate = true;
-		currenthealth = maxHealth;
-		newState(IDLE);
-		active = true;
-		fallSpeed = 0;
-	}
+        hitbox.x = x;
+        hitbox.y = y;
+        firstUpdate = true;
+        currenthealth = maxHealth;
+        newState(IDLE);
+        active = true;
+        fallSpeed = 0;
+    }
 
 }

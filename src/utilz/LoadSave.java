@@ -23,7 +23,7 @@ public class LoadSave {
     public static final String IMG_BUTTON = "img_buttons.png";
 
 
-    
+    // recupere une image dans le dossier data
     public static BufferedImage GetSpriteAtlas(String fileName) {
 
         BufferedImage img = null;

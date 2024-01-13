@@ -52,9 +52,9 @@ public class HelpMethods {
 			return true;
 		return false;
 	}
-	
-	public static float GetEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed){
 
+	// recupere le x de la pos si l'entity est a coté d'un mur 
+	public static float GetEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed){
 		int currentTile = (int)(hitbox.x / Game.TILES_SIZE);
 		if(xSpeed > 0) {
 			//Right
@@ -136,6 +136,7 @@ public class HelpMethods {
         return mirroredImage;
     }
 
+	// retourne la liste des redOrcs a partir de l'image
     public static ArrayList<RedOrc> GetRedOrc(BufferedImage img){ 
         ArrayList<RedOrc> list = new ArrayList<>();
          for(int j = 0; j < img.getHeight(); j++)
@@ -148,6 +149,7 @@ public class HelpMethods {
         return list; 
     }
 
+	// retourne le tableau des données du niveau a partir de l'image
     public static int[][] GetLevelData(BufferedImage img ){
         int[][] lvlData = new int[img.getHeight()][img.getWidth()];
         
@@ -162,6 +164,7 @@ public class HelpMethods {
         return lvlData;
     }
 
+	// retourne la position du joueur a partir de l'image
 	public static Point GetPlayerSpawn(BufferedImage img) {
 		for (int j = 0; j < img.getHeight(); j++)
 			for (int i = 0; i < img.getWidth(); i++) {

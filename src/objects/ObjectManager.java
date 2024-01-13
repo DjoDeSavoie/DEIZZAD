@@ -1,5 +1,9 @@
-package objects;
+/**
+ * @file ObjectManager.java
+ * @brief Classe représentant le gestionnaire d'objets dans le jeu.
+ */
 
+package objects;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -9,6 +13,10 @@ import Gamestates.Playing;
 import utilz.LoadSave;
 import static utilz.Constants.ObjectConstants.*;
 
+/**
+ * @class ObjectManager
+ * @brief Classe représentant le gestionnaire d'objets dans le jeu.
+ */
 public class ObjectManager {
 
     private Playing playing;
@@ -16,6 +24,10 @@ public class ObjectManager {
     private ArrayList<Potion> potions;
     private ArrayList<GameContainer> containers;
 
+    /**
+     * Constructeur de la classe ObjectManager.
+     * @param playing L'état de jeu "Playing".
+     */
     public ObjectManager(Playing playing){
         this.playing = playing;
         loadImgs();
@@ -27,9 +39,11 @@ public class ObjectManager {
         containers = new ArrayList<>();
         containers.add(new GameContainer(600, 300, BOX));
         containers.add(new GameContainer(500, 300, BARREL));
-
     }
 
+    /**
+     * Charge les images des objets.
+     */
     private void loadImgs() {
         BufferedImage potionSprite = LoadSave.GetSpriteAtlas(LoadSave.POTION_ATLAS);
         potionImgs = new BufferedImage[2][7];
@@ -49,7 +63,10 @@ public class ObjectManager {
             }
         }
     }
-//mise a jour des textures objets 
+
+    /**
+     * Met à jour les textures des objets.
+     */
     public void update(){
         for(Potion p : potions){
            if(p.isActive())
@@ -61,12 +78,21 @@ public class ObjectManager {
         }
     }
 
+    /**
+     * Dessine les objets sur l'écran.
+     * @param g Le contexte graphique.
+     * @param xLvlOffset Le décalage en x du niveau.
+     */
     public void draw(Graphics g, int xLvlOffset) {
         drawPotions(g, xLvlOffset);
         drawContainers(g, xLvlOffset);
-
     }
 
+    /**
+     * Dessine les conteneurs sur l'écran.
+     * @param g Le contexte graphique.
+     * @param xLvlOffset Le décalage en x du niveau.
+     */
     private void drawContainers(Graphics g, int xLvlOffset) {
         for(GameContainer gc : containers){
             if(gc.isActive()){
@@ -74,18 +100,22 @@ public class ObjectManager {
                 if(gc.getObjType() == BARREL){
                     type = 1;
                 }
-                //appel de la fonction drawImage de la classe Graphics en fonction de la valeur de type
-            g.drawImage(containerImgs[type][gc.getAniIndex()],
-                    (int) (gc.getHitbox().x - gc.getxDrawOffset() - xLvlOffset),
-                    (int) (gc.getHitbox().y - gc.getyDrawOffset()),
-                    CONTAINER_WIDTH,
-                    CONTAINER_HEIGHT,
-                    null);
-
+                // Appel de la fonction drawImage de la classe Graphics en fonction de la valeur de type.
+                g.drawImage(containerImgs[type][gc.getAniIndex()],
+                        (int) (gc.getHitbox().x - gc.getxDrawOffset() - xLvlOffset),
+                        (int) (gc.getHitbox().y - gc.getyDrawOffset()),
+                        CONTAINER_WIDTH,
+                        CONTAINER_HEIGHT,
+                        null);
             }
         }
     }
 
+    /**
+     * Dessine les potions sur l'écran.
+     * @param g Le contexte graphique.
+     * @param xLvlOffset Le décalage en x du niveau.
+     */
     private void drawPotions(Graphics g, int xLvlOffset) {
         for(Potion p : potions){
             if(p.isActive()){
@@ -93,14 +123,13 @@ public class ObjectManager {
                 if(p.getObjType() == BLUE_POTION){
                     type = 1;
                 }
-                //appel de la fonction drawImage de la classe Graphics en fonction de la valeur de type
-            g.drawImage(potionImgs[type][p.getAniIndex()],
-                    (int) (p.getHitbox().x - p.getxDrawOffset() - xLvlOffset),
-                    (int) (p.getHitbox().y - p.getyDrawOffset()),
-                    POTION_WIDTH,
-                    POTION_HEIGHT,
-                    null);
-
+                // Appel de la fonction drawImage de la classe Graphics en fonction de la valeur de type.
+                g.drawImage(potionImgs[type][p.getAniIndex()],
+                        (int) (p.getHitbox().x - p.getxDrawOffset() - xLvlOffset),
+                        (int) (p.getHitbox().y - p.getyDrawOffset()),
+                        POTION_WIDTH,
+                        POTION_HEIGHT,
+                        null);
             }
         }
     }

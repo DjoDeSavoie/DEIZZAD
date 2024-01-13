@@ -1,4 +1,9 @@
- package entities;
+/**
+ * @file RedOrc.java
+ * @brief Contient la définition de la classe RedOrc.
+ */
+
+package entities;
 
 import static utilz.Constants.EnemyConstants.*;
 import static utilz.HelpMethods.*;
@@ -10,6 +15,9 @@ import utilz.LoadSave;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+/**
+ * @brief Classe représentant un ennemi RedOrc dans le jeu.
+ */
 public class RedOrc extends Enemy {
 
     private static BufferedImage[][] redorcArr;
@@ -18,12 +26,20 @@ public class RedOrc extends Enemy {
         loadRedOrcImages();
     }
 
+    /**
+     * @brief Constructeur de la classe RedOrc.
+     * @param x Position horizontale initiale du RedOrc.
+     * @param y Position verticale initiale du RedOrc.
+     */
     public RedOrc(float x, float y) {
         super(x, y, REDORC_WIDTH, REDORC_HEIGHT, REDORC);
         initHitbox(x, y, (int)(25*Game.SCALE), (int)(31*Game.SCALE));
         initAttackBox();
-    }    
-    
+    }
+
+    /**
+     * @brief Charge les images du RedOrc à partir d'une feuille de sprites.
+     */
     private static void loadRedOrcImages() {
         redorcArr = new BufferedImage[5][6];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.REDORC_SPRITE);
@@ -35,6 +51,11 @@ public class RedOrc extends Enemy {
         }
     }
 
+    /**
+     * @brief Dessine le RedOrc.
+     * @param g Objet Graphics utilisé pour dessiner.
+     * @param xLvlOffset Décalage horizontal du niveau.
+     */
     public void draw(Graphics g, int xLvlOffset) {
         // Logique de dessin spécifique à RedOrc
         int x = (int) getHitbox().x - xLvlOffset - REDORC_DRAWOFFSET_X;
@@ -52,8 +73,4 @@ public class RedOrc extends Enemy {
 
         g.drawImage(imageToDraw, x, y, width, height, null);
     }
-
-    
-}    
-
-    
+}
