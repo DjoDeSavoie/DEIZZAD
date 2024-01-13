@@ -30,11 +30,11 @@ public class LevelManager {
 			Gamestate.state = Gamestate.MENU;
 		}
 
-		Level newLevel = levels.get(currentLevel);
-		game.getPlaying().getEnemyManager().LoadEnemies(newLevel); // on charge les enemies du level
-		game.getPlaying().getPlayer().loadlvlData(newLevel.getLevelData()); // on charge les donnees du level
-		game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset()); 
-	}
+        Level newLevel = levels.get(currentLevel);
+        game.getPlaying().getEnemyManager().LoadEnemies(newLevel); 
+        game.getPlaying().getPlayer().loadlvlData(newLevel.getLevelData()); 
+        game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset()); 
+    }
 
     // recupere les levels dans le dossier lvls
     private void buildAllLevels() {

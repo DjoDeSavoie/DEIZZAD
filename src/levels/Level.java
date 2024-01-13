@@ -20,25 +20,32 @@ import static utilz.HelpMethods.GetPlayerSpawn;
 
 public class Level {
 
-	private BufferedImage img;
-	private int[][] lvlData;
-	private ArrayList<? extends Enemy> enemies;
-	private int lvlTilesWide;
-	private int maxTilesOffset;
-	private int maxLvlOffsetX;
-	private Point playerSpawn;
+    private BufferedImage img;
+    private int[][] lvlData;
+    private ArrayList<? extends Enemy> enemies;
+    private int lvlTilesWide;
+    private int maxTilesOffset;
+    private int maxLvlOffsetX;
+    private Point playerSpawn;
 
-	public Level(BufferedImage img) {
-		this.img = img;
-		createLevelData();
-		createEnemies();
-		calcLvlOffsets();
-		calcPlayerSpawn();
-	}
+    /**
+     * Constructeur de la classe Level.
+     * @param img L'image du niveau.
+     */
+    public Level(BufferedImage img) {
+        this.img = img;
+        createLevelData();
+        createEnemies();
+        calcLvlOffsets();
+        calcPlayerSpawn();
+    }
 
-	private void calcPlayerSpawn() {
-		playerSpawn = GetPlayerSpawn(img);
-	}
+	/**
+	 * Calcule la position de spawn du joueur.
+	 */
+    private void calcPlayerSpawn() {
+        playerSpawn = GetPlayerSpawn(img);
+    }
 
     //recupere les dimensions du level; utile pour les deplacement dans le level
 	private void calcLvlOffsets() {
@@ -73,8 +80,11 @@ public class Level {
         return enemies;
     }
 
-	public Point getPlayerSpawn() {
-		return playerSpawn;
-	}
-
+    /**
+     * Retourne la position de spawn du joueur.
+     * @return La position de spawn du joueur.
+     */
+    public Point getPlayerSpawn() {
+        return playerSpawn;
+    }
 }

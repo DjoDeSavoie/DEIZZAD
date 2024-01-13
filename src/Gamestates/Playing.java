@@ -46,10 +46,12 @@ public class Playing extends State implements Statemethods {
 		player.setSpawnPos(levelManager.getCurrentLevel().getPlayerSpawn());
 	}
 
-    // charge les enemies du premier level
-	private void loadStartLevel() {
-		enemyManager.LoadEnemies(levelManager.getCurrentLevel());
-	}
+    /**
+     * Charge les ennemis du premier niveau.
+     */
+    private void loadStartLevel() {
+        enemyManager.LoadEnemies(levelManager.getCurrentLevel());
+    }
 
     public void setMaxLvlOffset(int LvlOffset) {
         this.maxLvlOffsetX = LvlOffset;
@@ -117,6 +119,11 @@ public class Playing extends State implements Statemethods {
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
+
+    /**
+     * Dessine l'état de jeu.
+     * @param g L'objet Graphics utilisé pour dessiner.
+     */
     @Override
     public void draw(Graphics g) {
         levelManager.draw(g, xLvlOffset);
@@ -153,6 +160,10 @@ public class Playing extends State implements Statemethods {
             endLevelOverlay.mouseMoved(e);
     }
 
+    /**
+     * Gère l'événement de clic de souris.
+     * @param e L'événement de la souris.
+     */
     @Override
     public void mouseclicked(MouseEvent e) {
         if(!gameOver)
@@ -209,12 +220,11 @@ public class Playing extends State implements Statemethods {
 		gameOver = false;
 		//paused = false;
         levelComplete = false;
-		player.resetAll();
-		enemyManager.resetAllEnemies();
-	}
+        player.resetAll();
+        enemyManager.resetAllEnemies();
+    }
 
     public EnemyManager getEnemyManager() {
         return enemyManager;
     }
-
 }

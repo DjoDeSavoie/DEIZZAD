@@ -32,9 +32,11 @@ public class ObjectManager {
         containers = new ArrayList<>();
         containers.add(new GameContainer(600, 300, BOX));
         containers.add(new GameContainer(500, 300, BARREL));
-
     }
 
+    /**
+     * Charge les images des objets.
+     */
     private void loadImgs() {
         BufferedImage potionSprite = LoadSave.GetSpriteAtlas(LoadSave.POTION_ATLAS);
         potionImgs = new BufferedImage[2][7];

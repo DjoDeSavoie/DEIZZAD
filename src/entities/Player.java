@@ -96,13 +96,16 @@ public class Player extends Entity {
             return;
         }
         updateAttackBox();
-		updatePos();
-        if(attacking)
+        updatePos();
+        if (attacking)
             checkAttack();
         updateAnimationTick();
 		setAnimation();
     }
 
+    /**
+     * @brief verifie si le joueur a touché un ennemi.
+     */
     private void checkAttack() {
         if(attackChecked || aniIndex != 1)
             return;
@@ -111,9 +114,9 @@ public class Player extends Entity {
     }
 
     private void updateAttackBox() {
-        if(left)
+        if (left)
             attackBox.x = hitbox.x - hitbox.width - (int) (-10 * Game.SCALE);
-        else if(right)
+        else if (right)
             attackBox.x = hitbox.x + hitbox.width + (int) (- 10 * Game.SCALE);
         attackBox.y = hitbox.y + (int) (10 * Game.SCALE);
     }
@@ -132,19 +135,11 @@ public class Player extends Entity {
             currentHealth = maxHealth;
     }
 
-    // private BufferedImage getMirroredImage(BufferedImage image) {
-    //     AffineTransform at = AffineTransform.getScaleInstance(-1, 1);
-    //     at.translate(-image.getWidth(), 0);
-    
-    //     BufferedImage mirroredImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-    //     Graphics2D g2d = mirroredImage.createGraphics();
-    //     g2d.setTransform(at);
-    //     g2d.drawImage(image, 0, 0, null);
-    //     g2d.dispose();
-    
-    //     return mirroredImage;
-    // }
-
+    /**
+     * @brief Rend l'image du joueur avec les éléments associés (animations, barre de vie, etc.).
+     * @param g Objet Graphics utilisé pour dessiner.
+     * @param lvlOffset Décalage horizontal du niveau.
+     */
     public void render(Graphics g, int lvlOffset) {
         BufferedImage imageToDraw = animations[playerAction][aniIndex];
         
