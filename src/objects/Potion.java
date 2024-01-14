@@ -13,6 +13,9 @@ import main.Game;
  */
 public class Potion extends GameObject {
 
+    private float hoverOffset;
+    private int maxHoverOffset, hoverDir = 1;
+
     /**
      * Constructeur de la classe Potion.
      * @param x La position x de la potion.
@@ -26,6 +29,9 @@ public class Potion extends GameObject {
         initHitbox(7, 14);
         xDrawOffset = (int) (3 * Game.SCALE); // Décalage de 3 pixels depuis la gauche de la hitbox.
         yDrawOffset = (int) (2 * Game.SCALE); // Décalage de 2 pixels depuis le haut de la hitbox.
+    
+        maxHoverOffset = (int) (10 * Game.SCALE);
+
     }
 
     /**
@@ -33,5 +39,17 @@ public class Potion extends GameObject {
      */
     public void update() {
         updateAnimationTick();
+        updateHover();
+    }
+
+    private void updateHover() {
+        hoverOffset += (0.75f * Game.SCALE * hoverDir);
+
+        if(hoverOffset >= maxHoverOffset)
+            hoverDir = -1;
+        else if(hoverOffset < 0)
+            hoverDir = 1;
+
+        hitbox.y = y + hoverOffset;
     }
 }

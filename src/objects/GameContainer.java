@@ -42,6 +42,10 @@ public class GameContainer extends GameObject{
             xDrawOffset = (int) (8 * Game.SCALE);
             yDrawOffset = (int) (12 * Game.SCALE);
         }
+
+        // Décalage de la hitbox pour que les objets soient en contact direct avec le sol
+        hitbox.y += yDrawOffset + (int) (Game.SCALE * 2);
+        hitbox.x += xDrawOffset / 2;
     }
 
     /**

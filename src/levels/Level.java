@@ -9,8 +9,16 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+//import les constantes d'objets
+import static utilz.Constants.ObjectConstants.*;
+
+
 import entities.Enemy;
 import main.Game;
+import objects.Potion;
+import utilz.HelpMethods;
+import objects.GameContainer;
+
 import static utilz.HelpMethods.GetLevelData;
 import static utilz.HelpMethods.GetRedOrc;
 import static utilz.HelpMethods.GetPlayerSpawn;
@@ -24,6 +32,9 @@ public class Level {
     private BufferedImage img;
     private int[][] lvlData;
     private ArrayList<? extends Enemy> enemies;
+    private ArrayList<Potion> potions;
+    private ArrayList<GameContainer> containers;
+
     private int lvlTilesWide;
     private int maxTilesOffset;
     private int maxLvlOffsetX;
@@ -37,9 +48,29 @@ public class Level {
         this.img = img;
         createLevelData();
         createEnemies();
+        createPotions();
+        createContainers();
         calcLvlOffsets();
         calcPlayerSpawn();
     }
+
+
+    /**
+     * Crée les potions du niveau.
+     */
+    private void createPotions() {
+        potions = HelpMethods.GetPotions(img);
+
+    }
+
+    /**
+     * Crée les conteneurs du niveau.
+     */
+    private void createContainers() {
+        containers = HelpMethods.GetContainers(img);
+
+    }
+
 
 	/**
 	 * Calcule la position de spawn du joueur.
@@ -111,5 +142,22 @@ public class Level {
      */
     public Point getPlayerSpawn() {
         return playerSpawn;
+    }
+
+
+    /**
+     * Retourne la liste des potions du niveau.
+     * @return La liste des potions du niveau.
+     */
+    public ArrayList<Potion> getPotions() {
+        return potions;
+    }
+
+    /**
+     * Retourne la liste des conteneurs du niveau.
+     * @return La liste des conteneurs du niveau.
+     */
+    public ArrayList<GameContainer> getContainers() {
+        return containers;
     }
 }

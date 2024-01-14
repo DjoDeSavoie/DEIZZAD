@@ -58,7 +58,7 @@ public class Player extends Entity {
     private int healthBarX = (int) (34 * Game.SCALE);
     private int healthBarY = (int) (14 * Game.SCALE);
 
-    private int maxHealth = 100;
+    private int maxHealth = 35;
     private int currentHealth = maxHealth;
     private int healthWidth = healthBarWidth;
 
@@ -109,10 +109,16 @@ public class Player extends Entity {
         }
         updateAttackBox();
         updatePos();
+        if(moving)
+            checkPotionTouched();
         if (attacking)
             checkAttack();
         updateAnimationTick();
         setAnimation();
+    }
+
+    private void checkPotionTouched() {
+        playing.checkPotionTouched(hitbox);
     }
 
     /**
@@ -123,6 +129,7 @@ public class Player extends Entity {
             return;
         attackChecked = true;
         playing.checkEnemyHit(attackBox);
+        playing.checkObjectHit(attackBox);
     }
 
     /**
@@ -153,6 +160,15 @@ public class Player extends Entity {
             currentHealth = 0;
         else if (currentHealth >= maxHealth)
             currentHealth = maxHealth;
+    }
+
+    /**
+     * @brief Modifie la puissance du joueur.
+     * @param value Valeur à ajouter ou soustraire à la puissance actuelle.
+     */
+
+    public void changePower(int value) {
+        System.out.println("Puissance Ajoutée !");
     }
 
     /**

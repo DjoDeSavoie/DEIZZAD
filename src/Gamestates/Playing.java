@@ -6,6 +6,7 @@
 package Gamestates;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -13,6 +14,8 @@ import java.awt.geom.Rectangle2D;
 import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
+import objects.ObjectManager;
+
 import main.Game;
 import ui.EndLevelOverlay;
 
@@ -26,6 +29,7 @@ public class Playing extends State implements Statemethods {
     private Player player;
     private LevelManager levelManager;
     private EnemyManager enemyManager;
+    private ObjectManager objectManager;
     private GameOverOverlay gameOverOverlay;
     private EndLevelOverlay endLevelOverlay;
     private boolean gameOver;
@@ -68,6 +72,7 @@ public class Playing extends State implements Statemethods {
      */
     private void loadStartLevel() {
         enemyManager.LoadEnemies(levelManager.getCurrentLevel());
+        objectManager.loadObjects(levelManager.getCurrentLevel());
     }
 
     /**
@@ -84,6 +89,7 @@ public class Playing extends State implements Statemethods {
     private void initClasses() {
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this);
+        objectManager = new ObjectManager(this);
         player = new Player(200, 200, (int) (75 * Game.SCALE), (int) (73 * Game.SCALE), this);
         player.loadlvlData(levelManager.getCurrentLevel().getLevelData());
         player.setSpawnPos(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -115,6 +121,7 @@ public class Playing extends State implements Statemethods {
             endLevelOverlay.update();
         } else if (!gameOver) {
             levelManager.update();
+            objectManager.update();
             player.update();
             checkCloseToboredr();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
@@ -156,6 +163,10 @@ public class Playing extends State implements Statemethods {
         this.gameOver = gameOver;
     }
 
+    public void checkObjectHit(Rectangle2D.Float attackBox) {
+        objectManager.checkObjectHit(attackBox);
+    }
+
     /**
      * Dessine l'état de jeu.
      * @param g L'objet Graphics utilisé pour dessiner.
@@ -165,6 +176,7 @@ public class Playing extends State implements Statemethods {
         levelManager.draw(g, xLvlOffset);
         player.render(g, xLvlOffset);
         enemyManager.draw(g, xLvlOffset);
+        objectManager.draw(g, xLvlOffset);
 
         if (gameOver)
             gameOverOverlay.draw(g);
@@ -208,6 +220,10 @@ public class Playing extends State implements Statemethods {
     public void mouseMoved(MouseEvent e) {
         if (!gameOver && levelComplete)
             endLevelOverlay.mouseMoved(e);
+    }
+
+    public void checkPotionTouched(Rectangle2D.Float hitbox) {
+        objectManager.checkObjectTouched(hitbox);
     }
 
     /**
@@ -281,6 +297,7 @@ public class Playing extends State implements Statemethods {
         levelComplete = false;
         player.resetAll();
         enemyManager.resetAllEnemies();
+        objectManager.resetAllObjects();
     }
 
     /**
@@ -289,5 +306,9 @@ public class Playing extends State implements Statemethods {
      */
     public EnemyManager getEnemyManager() {
         return enemyManager;
+    }
+
+    public ObjectManager getObjectManager() {
+        return objectManager;
     }
 }

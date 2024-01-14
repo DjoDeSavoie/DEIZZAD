@@ -119,6 +119,11 @@ public class GameObject {
         this.active = active;
     }
 
+
+    public void setAnimation(boolean doAnimation) {
+        this.doAnimation = doAnimation;
+    }
+
     /**
      * Obtient le décalage en x pour le dessin de l'objet.
      * @return Le décalage en x.
