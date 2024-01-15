@@ -10,6 +10,10 @@ import java.awt.Graphics;
 
 import main.Game;
 
+/*
+ * Classe abstraite pour les objets du jeu.
+ */
+
 public class GameObject {
     protected int x, y, objType;
     protected Rectangle2D.Float hitbox;
@@ -23,7 +27,9 @@ public class GameObject {
         this.objType = objType;
     }
 
-    //mise a jour de la valeur de l'incrémentation de l'animation
+/*
+*mise a jour de la valeur de l'incrémentation de l'animation
+*/
     protected void updateAnimationTick(){
         aniTick++;
         if(aniTick >= ANI_SPEED){
@@ -39,6 +45,10 @@ public class GameObject {
         }
     }
 
+
+    /*
+     * Reset l'animation de l'objet.
+     */
     public void reset(){
         aniIndex = 0;
         aniTick = 0;
@@ -50,10 +60,16 @@ public class GameObject {
             doAnimation = true;
     }
 
+    /*
+     * initialise la hitbox de l'objet
+     */
     protected void initHitbox(float width, float height) {
         hitbox = new Rectangle2D.Float(x, y, (int) (width * Game.SCALE), (int) (height * Game.SCALE));
     }
 
+    /*
+     * dessine la hitbox de l'objet
+     */
     public void drawHitbox(Graphics g, int xLvlOffset){
         // pour debugger le hitbox
         g.setColor(Color.RED);

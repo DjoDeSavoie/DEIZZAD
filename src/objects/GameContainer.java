@@ -5,11 +5,20 @@ import main.Game;
 
 public class GameContainer extends GameObject{
     
+    /**
+     * Constructeur de la classe GameContainer.
+     * @param x La position x du conteneur.
+     * @param y La position y du conteneur.
+     * @param objType Le type du conteneur.
+     */
     public GameContainer(int x, int y, int objType) {
         super(x, y, objType);
         createHitbox();
     }
 
+    /**
+     * Crée la hitbox de l'objet.
+     */
     private void createHitbox(){
 
         if(objType == BOX) {

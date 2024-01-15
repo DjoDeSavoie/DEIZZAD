@@ -14,6 +14,10 @@ import main.Game;
 
 import static utilz.Constants.ObjectConstants.*;
 
+/**
+ * La classe ObjectManager gère les objets du jeu, tels que les potions et les conteneurs.
+ */
+
 public class ObjectManager {
 
     private Playing playing;
@@ -56,7 +60,9 @@ public class ObjectManager {
             }
         }
     }
-//mise a jour des textures objets 
+/**
+ * mise a jour des textures objets 
+ */
     public void update(){
         for(Potion p : potions){
            if(p.isActive())
@@ -67,13 +73,17 @@ public class ObjectManager {
                 gc.update();
         }
     }
-
+/*
+ * dessine les objets
+ */
     public void draw(Graphics g, int xLvlOffset) {
         drawPotions(g, xLvlOffset);
         drawContainers(g, xLvlOffset);
 
     }
-
+/*
+ * dessine les containers
+ */
     private void drawContainers(Graphics g, int xLvlOffset) {
         for(GameContainer gc : containers){
             if(gc.isActive()){
@@ -92,7 +102,9 @@ public class ObjectManager {
             }
         }
     }
-
+/*
+ * dessine les potions
+ */
     private void drawPotions(Graphics g, int xLvlOffset) {
         for(Potion p : potions){
             if(p.isActive()){
