@@ -13,10 +13,11 @@ import main.Game;
 import static utilz.Constants.ANI_SPEED;
 import static utilz.Constants.ObjectConstants.*;
 
-/**
- * @class GameObject
- * @brief Classe représentant un objet de jeu dans le jeu.
- */
+import java.awt.Color;
+import java.awt.Graphics;
+
+import main.Game;
+
 public class GameObject {
     protected int x, y, objType;
     protected Rectangle2D.Float hitbox;
@@ -36,9 +37,7 @@ public class GameObject {
         this.objType = objType;
     }
 
-    /**
-     * Mise à jour de la valeur de l'incrémentation de l'animation.
-     */
+    //mise a jour de la valeur de l'incrémentation de l'animation
     protected void updateAnimationTick(){
         aniTick++;
         if(aniTick >= ANI_SPEED){
@@ -54,9 +53,6 @@ public class GameObject {
         }
     }
 
-    /**
-     * Réinitialise les paramètres de l'objet.
-     */
     public void reset(){
         aniIndex = 0;
         aniTick = 0;
@@ -68,20 +64,10 @@ public class GameObject {
             doAnimation = true;
     }
 
-    /**
-     * Initialise la hitbox de l'objet en fonction de sa taille.
-     * @param width La largeur de la hitbox.
-     * @param height La hauteur de la hitbox.
-     */
     protected void initHitbox(float width, float height) {
         hitbox = new Rectangle2D.Float(x, y, (int) (width * Game.SCALE), (int) (height * Game.SCALE));
     }
 
-    /**
-     * Dessine la hitbox de l'objet pour le débogage.
-     * @param g Le contexte graphique.
-     * @param xLvlOffset Le décalage en x du niveau.
-     */
     public void drawHitbox(Graphics g, int xLvlOffset){
         g.setColor(Color.RED);
         g.drawRect((int)hitbox.x - xLvlOffset, (int)hitbox.y, (int)hitbox.width, (int)hitbox.height);
@@ -119,15 +105,6 @@ public class GameObject {
         this.active = active;
     }
 
-
-    public void setAnimation(boolean doAnimation) {
-        this.doAnimation = doAnimation;
-    }
-
-    /**
-     * Obtient le décalage en x pour le dessin de l'objet.
-     * @return Le décalage en x.
-     */
     public int getxDrawOffset() {
         return xDrawOffset;
     }

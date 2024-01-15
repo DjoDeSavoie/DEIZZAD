@@ -93,6 +93,7 @@ public class Playing extends State implements Statemethods {
         player = new Player(200, 200, (int) (75 * Game.SCALE), (int) (73 * Game.SCALE), this);
         player.loadlvlData(levelManager.getCurrentLevel().getLevelData());
         player.setSpawnPos(levelManager.getCurrentLevel().getPlayerSpawn());
+       
         gameOverOverlay = new GameOverOverlay(this);
         endLevelOverlay = new EndLevelOverlay(this);
     }
@@ -123,8 +124,9 @@ public class Playing extends State implements Statemethods {
             levelManager.update();
             objectManager.update();
             player.update();
-            checkCloseToboredr();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+            checkCloseToboredr();
+            
         }
     }
 
@@ -161,10 +163,6 @@ public class Playing extends State implements Statemethods {
      */
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
-    }
-
-    public void checkObjectHit(Rectangle2D.Float attackBox) {
-        objectManager.checkObjectHit(attackBox);
     }
 
     /**
@@ -220,10 +218,6 @@ public class Playing extends State implements Statemethods {
     public void mouseMoved(MouseEvent e) {
         if (!gameOver && levelComplete)
             endLevelOverlay.mouseMoved(e);
-    }
-
-    public void checkPotionTouched(Rectangle2D.Float hitbox) {
-        objectManager.checkObjectTouched(hitbox);
     }
 
     /**
@@ -308,7 +302,4 @@ public class Playing extends State implements Statemethods {
         return enemyManager;
     }
 
-    public ObjectManager getObjectManager() {
-        return objectManager;
-    }
 }

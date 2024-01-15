@@ -5,11 +5,7 @@
 
 package entities;
 
-import static utilz.Constants.PlayerConstants.GetSpriteAmount;
-import static utilz.Constants.PlayerConstants.IDLE;
-import static utilz.Constants.PlayerConstants.JUMPING;
-import static utilz.Constants.PlayerConstants.WALKING;
-import static utilz.Constants.PlayerConstants.ATTACK_1;
+import static utilz.Constants.PlayerConstants.*;
 import static utilz.HelpMethods.*;
 import Gamestates.Playing;
 
@@ -109,6 +105,8 @@ public class Player extends Entity {
         }
         updateAttackBox();
         updatePos();
+        if (attacking)
+        updatePos();
         if(moving)
             checkPotionTouched();
         if (attacking)
@@ -124,6 +122,9 @@ public class Player extends Entity {
     /**
      * @brief verifie si le joueur a touché un ennemi.
      */
+    /**
+     * @brief verifie si le joueur a touché un ennemi.
+     */
     private void checkAttack() {
         if (attackChecked || aniIndex != 1)
             return;
@@ -136,9 +137,9 @@ public class Player extends Entity {
      * @brief Met à jour la position de l'attack box.
      */
     private void updateAttackBox() {
-        if (left)
+        if  (left)
             attackBox.x = hitbox.x - hitbox.width - (int) (-10 * Game.SCALE);
-        else if (right)
+        else if  (right)
             attackBox.x = hitbox.x + hitbox.width + (int) (- 10 * Game.SCALE);
         attackBox.y = hitbox.y + (int) (10 * Game.SCALE);
     }
@@ -163,12 +164,36 @@ public class Player extends Entity {
     }
 
     /**
+     * @brief Rend l'image du joueur avec les éléments associés (animations, barre de vie, etc.).
+     * @param g Objet Graphics utilisé pour dessiner.
+     * @param lvlOffset Décalage horizontal du niveau.
+     */
+    /**
      * @brief Modifie la puissance du joueur.
      * @param value Valeur à ajouter ou soustraire à la puissance actuelle.
      */
 
     public void changePower(int value) {
         System.out.println("Puissance Ajoutée !");
+    }
+
+    /**
+     * @brief Rend l'image du joueur avec les éléments associés (animations, barre de vie, etc.).
+     * @param g Objet Graphics utilisé pour dessiner.
+     * @param lvlOffset Décalage horizontal du niveau.
+     */
+    public void render(Graphics g, int lvlOffset) {
+        BufferedImage imageToDraw = animations[playerAction][aniIndex];
+
+        int x = (int) (hitbox.x - xDrawOffset) + flipX;
+        int y = (int) (hitbox.y - yDrawOffset);
+        int width = this.width * flipW;
+        int height = this.height;
+
+        g.drawImage(imageToDraw, x - lvlOffset, y, width, height, null);
+        drawHealthBar(g);
+        //drawAttackBox(g,0);
+        //drawHitbox(g, 0); 
     }
 
     /**

@@ -7,8 +7,10 @@ package objects;
 
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Level;
 
 import Gamestates.Playing;
@@ -16,12 +18,15 @@ import utilz.LoadSave;
 import levels.*;
 import main.Game;
 
+import levels.*;
+import main.Game;
+
 import static utilz.Constants.ObjectConstants.*;
 
 /**
- * @class ObjectManager
- * @brief Classe représentant le gestionnaire d'objets dans le jeu.
+ * La classe ObjectManager gère les objets du jeu, tels que les potions et les conteneurs.
  */
+
 public class ObjectManager {
 
     private Playing playing;
@@ -36,6 +41,19 @@ public class ObjectManager {
     public ObjectManager(Playing playing){
         this.playing = playing;
         loadImgs();
+
+        potions = new ArrayList<>();
+        potions.add(new Potion(300, 300, RED_POTION));
+        potions.add(new Potion(400, 300, BLUE_POTION));
+
+        containers = new ArrayList<>();
+        containers.add(new GameContainer(600, 300, BOX));
+        containers.add(new GameContainer(500, 300, BARREL));
+    }
+
+    /**
+     * Charge les images des objets.
+     */
     }
 
 
@@ -118,6 +136,9 @@ public class ObjectManager {
                 gc.update();
         }
     }
+/*
+ * dessine les objets
+ */
 
     /**
      * Dessine les objets sur l'écran.
@@ -125,8 +146,9 @@ public class ObjectManager {
      * @param xLvlOffset Le décalage en x du niveau.
      */
     public void draw(Graphics g, int xLvlOffset) {
-        drawPotions(g, xLvlOffset);
-        drawContainers(g, xLvlOffset);
+        // drawPotions(g, xLvlOffset);
+        // drawContainers(g, xLvlOffset);
+
     }
 
     /**

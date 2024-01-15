@@ -22,6 +22,13 @@ public class Potion extends GameObject {
      * @param y La position y de la potion.
      * @param objType Le type de la potion.
      */
+
+    /**
+     * Constructeur de la classe Potion.
+     * @param x La position x de la potion.
+     * @param y La position y de la potion.
+     * @param objType Le type de la potion.
+     */
     public Potion(int x, int y, int objType) {
         super(x, y, objType);
         doAnimation = true;
@@ -29,14 +36,8 @@ public class Potion extends GameObject {
         initHitbox(7, 14);
         xDrawOffset = (int) (3 * Game.SCALE); // Décalage de 3 pixels depuis la gauche de la hitbox.
         yDrawOffset = (int) (2 * Game.SCALE); // Décalage de 2 pixels depuis le haut de la hitbox.
-    
-        maxHoverOffset = (int) (10 * Game.SCALE);
-
     }
 
-    /**
-     * Met à jour la potion.
-     */
     public void update() {
         updateAnimationTick();
         updateHover();
