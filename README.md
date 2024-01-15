@@ -234,11 +234,6 @@ git clone https://github.com/DjoDeSavoie/DEIZZAD.git
 cd DEIZZAD
 ```
 
-3. Install the dependencies:
-
-```sh
-mvn clean install
-```
 
 ### 🤖 Running DEIZZAD
 
@@ -248,13 +243,6 @@ Use the following command to run DEIZZAD:
 java -jar target/myapp.jar
 ```
 
-### 🧪 Tests
-
-To execute tests, run:
-
-```sh
-mvn test
-```
 
 ---
 
