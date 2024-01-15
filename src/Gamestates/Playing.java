@@ -60,9 +60,11 @@ public class Playing extends State implements Statemethods {
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this);
         objectManager = new ObjectManager(this);
+
         player = new Player(200, 200, (int) (75 * Game.SCALE), (int) (73 * Game.SCALE), this);
         player.loadlvlData(levelManager.getCurrentLevel().getLevelData());
         player.setSpawnPos(levelManager.getCurrentLevel().getPlayerSpawn());
+       
         gameOverOverlay = new GameOverOverlay(this);
         endLevelOverlay = new EndLevelOverlay(this);
     }
@@ -85,8 +87,9 @@ public class Playing extends State implements Statemethods {
             levelManager.update();
             objectManager.update();
             player.update();
-            checkCloseToboredr();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+            checkCloseToboredr();
+            
         }
     }
 

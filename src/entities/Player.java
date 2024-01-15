@@ -1,10 +1,6 @@
 package entities;
 
-import static utilz.Constants.PlayerConstants.GetSpriteAmount;
-import static utilz.Constants.PlayerConstants.IDLE;
-import static utilz.Constants.PlayerConstants.JUMPING;
-import static utilz.Constants.PlayerConstants.WALKING;
-import static utilz.Constants.PlayerConstants.ATTACK_1;
+import static utilz.Constants.PlayerConstants.*;
 import static utilz.HelpMethods.*;
 import Gamestates.Playing;
 

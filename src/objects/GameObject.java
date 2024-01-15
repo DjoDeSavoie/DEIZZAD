@@ -78,6 +78,11 @@ public class GameObject {
         this.active = active;
     }
 
+
+     /**
+     * Obtient le décalage en x pour le dessin de l'objet.
+     * @return Le décalage en x.
+     */
     public int getxDrawOffset() {
         return xDrawOffset;
     }
