@@ -21,6 +21,7 @@ public class LoadSave {
     public static final String CONTAINER_ATLAS = "objects_sprites.png";
     public static final String END_LVL = "end_lvl.png";
     public static final String IMG_BUTTON = "img_buttons.png";
+    public static final String GAME_OVER = "game_over.png";
 
 
     // recupere une image dans le dossier data

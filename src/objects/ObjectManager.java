@@ -54,7 +54,7 @@ public class ObjectManager {
     /**
      * Charge les images des objets.
      */
-    }
+    
 
 
     public void checkObjectTouched(Rectangle2D.Float hitbox){

@@ -54,7 +54,7 @@ public class Player extends Entity {
     private int healthBarX = (int) (34 * Game.SCALE);
     private int healthBarY = (int) (14 * Game.SCALE);
 
-    private int maxHealth = 35;
+    private int maxHealth = 100;
     private int currentHealth = maxHealth;
     private int healthWidth = healthBarWidth;
 
@@ -99,29 +99,22 @@ public class Player extends Entity {
     public void update() {
         updateHealthBar();
 
-        if (currentHealth <= 0) {
+        if(currentHealth <= 0){
             playing.setGameOver(true);
             return;
         }
         updateAttackBox();
         updatePos();
         if (attacking)
-        updatePos();
-        if(moving)
-            checkPotionTouched();
-        if (attacking)
             checkAttack();
         updateAnimationTick();
-        setAnimation();
+		setAnimation();
     }
 
     private void checkPotionTouched() {
-        playing.checkPotionTouched(hitbox);
+        //playing.checkPotionTouched(hitbox);
     }
 
-    /**
-     * @brief verifie si le joueur a touché un ennemi.
-     */
     /**
      * @brief verifie si le joueur a touché un ennemi.
      */
@@ -130,7 +123,7 @@ public class Player extends Entity {
             return;
         attackChecked = true;
         playing.checkEnemyHit(attackBox);
-        playing.checkObjectHit(attackBox);
+        //playing.checkObjectHit(attackBox);
     }
 
     /**
@@ -164,11 +157,6 @@ public class Player extends Entity {
     }
 
     /**
-     * @brief Rend l'image du joueur avec les éléments associés (animations, barre de vie, etc.).
-     * @param g Objet Graphics utilisé pour dessiner.
-     * @param lvlOffset Décalage horizontal du niveau.
-     */
-    /**
      * @brief Modifie la puissance du joueur.
      * @param value Valeur à ajouter ou soustraire à la puissance actuelle.
      */
@@ -178,7 +166,7 @@ public class Player extends Entity {
     }
 
     /**
-     * @brief Rend l'image du joueur avec les éléments associés (animations, barre de vie, etc.).
+     * @brief Render l'image du joueur avec les éléments associés (animations, barre de vie, etc.).
      * @param g Objet Graphics utilisé pour dessiner.
      * @param lvlOffset Décalage horizontal du niveau.
      */
@@ -197,23 +185,6 @@ public class Player extends Entity {
     }
 
     /**
-     * @brief Rend l'image du joueur avec les éléments associés (animations, barre de vie, etc.).
-     * @param g Objet Graphics utilisé pour dessiner.
-     * @param lvlOffset Décalage horizontal du niveau.
-     */
-    public void render(Graphics g, int lvlOffset) {
-        BufferedImage imageToDraw = animations[playerAction][aniIndex];
-
-        int x = (int) (hitbox.x - xDrawOffset) + flipX;
-        int y = (int) (hitbox.y - yDrawOffset);
-        int width = this.width * flipW;
-        int height = this.height;
-
-        g.drawImage(imageToDraw, x - lvlOffset, y, width, height, null);
-        drawHealthBar(g);
-    }
-
-    /**
      * @brief Dessine la healthbar du joueur.
      * @param g Objet Graphics utilisé pour dessiner.
      */
@@ -221,6 +192,9 @@ public class Player extends Entity {
         g.drawImage(healthBar, statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
         g.setColor(java.awt.Color.RED);
         g.fillRect(healthBarX + statusBarX, healthBarY + statusBarY, healthWidth, healthBarHeight);
+        // g.drawImage(healthBar, healthBarX, healthBarY, healthBarWidth, healthBarHeight, null);
+        // g.setColor(java.awt.Color.RED);
+        // g.fillRect(healthBarX + (int)(35 * Game.SCALE) , healthBarY + (int)(15 * Game.SCALE), healthWidth, 10);
     }
 
     /**
@@ -302,6 +276,9 @@ public class Player extends Entity {
         if (jump)
             jump();
 
+        //si aucun input n'est recu, on ne fait rien
+        // if(!left && !right && !inAir)
+        //     return;
         if (!inAir && ((!left && !right) || (right && left)))
             return;
 
@@ -329,9 +306,9 @@ public class Player extends Entity {
                 updateXpos(xSpeed);
             } else {
                 hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
-                if (airSpeed > 0)
+                if (airSpeed > 0)//si on tombe
                     resetInAir();
-                else
+                else //si on saute
                     airSpeed = fallSpeedAfterCollision;
                 updateXpos(xSpeed);
             }
@@ -389,6 +366,8 @@ public class Player extends Entity {
 
     /**
      * @brief Réinitialise les variables booléennes de direction.
+     * //permet de réinitialiser les variables booléennes de direction
+     * //Dans le ccas par exemple où l'on quitte la fenetre de jeu pendant que le perso se déplace
      */
     public void resetDirBooleans() {
         left = false;

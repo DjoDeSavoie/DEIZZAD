@@ -9,12 +9,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import main.Game;
+import utilz.LoadSave;
+
+import java.awt.image.BufferedImage;
 
 /**
  * @brief Classe représentant l'écran de fin de jeu (Game Over).
  */
 public class GameOverOverlay {
 
+    private BufferedImage img;
+    private int x, y, width, height;
     private Playing playing;
 
     /**
@@ -23,6 +28,18 @@ public class GameOverOverlay {
      */
     public GameOverOverlay(Playing playing) {
         this.playing = playing;
+        initImg();
+    }
+
+    /**
+	 * Charge l'image de fond.
+	 */
+    private void initImg() {
+        img = LoadSave.GetSpriteAtlas(LoadSave.GAME_OVER);
+        width = (int) (img.getWidth() * Game.SCALE);
+        height = (int) (img.getHeight() * Game.SCALE);
+        x = Game.GAME_WIDTH / 2 - 200;
+        y = (int) (40 * Game.SCALE);
     }
 
     /**
@@ -31,15 +48,16 @@ public class GameOverOverlay {
      */
     public void draw(Graphics g) {
         // Fond semi-transparent en noir
-        g.setColor(new Color(0, 0, 0, 200));
-        g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
+        //g.setColor(new Color(0, 0, 0, 200));
+        //g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 
         // Texte "Game Over" en blanc centré
-        g.setColor(Color.white);
-        g.drawString("Game Over", Game.GAME_WIDTH / 2, 150);
+        //g.setColor(Color.white);
+        //g.drawString("Game Over", Game.GAME_WIDTH / 2, 150);
 
         // Instructions pour retourner au menu
-        g.drawString("Cliquez sur Echap pour retourner au Menu", Game.GAME_WIDTH / 2, 300);
+        //g.drawString("Cliquez sur Echap pour retourner au Menu", Game.GAME_WIDTH / 2, 300);
+        g.drawImage(img, x, y, width, height, null);
     }
 
     /**

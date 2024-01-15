@@ -32,7 +32,6 @@ public class Level {
     private BufferedImage img;
     private int[][] lvlData;
     private ArrayList<? extends Enemy> enemies;
-<<<<<<< HEAD
     private ArrayList<Potion> potions;
     private ArrayList<GameContainer> containers;
 
@@ -53,30 +52,6 @@ public class Level {
         createContainers();
         calcLvlOffsets();
         calcPlayerSpawn();
-=======
-    private int lvlTilesWide;
-    private int maxTilesOffset;
-    private int maxLvlOffsetX;
-    private Point playerSpawn;
-
-    /**
-     * Constructeur de la classe Level.
-     * @param img L'image du niveau.
-     */
-    public Level(BufferedImage img) {
-        this.img = img;
-        createLevelData();
-        createEnemies();
-        calcLvlOffsets();
-        calcPlayerSpawn();
-    }
-
-	/**
-	 * Calcule la position de spawn du joueur.
-	 */
-    private void calcPlayerSpawn() {
-        playerSpawn = GetPlayerSpawn(img);
->>>>>>> origin/HEAD
     }
 
 
@@ -168,7 +143,6 @@ public class Level {
     public Point getPlayerSpawn() {
         return playerSpawn;
     }
-<<<<<<< HEAD
 
 
     /**
@@ -186,6 +160,4 @@ public class Level {
     public ArrayList<GameContainer> getContainers() {
         return containers;
     }
-=======
->>>>>>> origin/HEAD
 }
