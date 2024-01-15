@@ -76,9 +76,10 @@ public class ObjectManager {
 /*
  * dessine les objets
  */
+
     public void draw(Graphics g, int xLvlOffset) {
-        drawPotions(g, xLvlOffset);
-        drawContainers(g, xLvlOffset);
+        // drawPotions(g, xLvlOffset);
+        // drawContainers(g, xLvlOffset);
 
     }
 /*
