@@ -240,7 +240,7 @@ cd DEIZZAD
 Use the following command to run DEIZZAD:
 
 ```sh
-java -jar target/myapp.jar
+java -jar DEIZZAD.jar
 ```
 
 
