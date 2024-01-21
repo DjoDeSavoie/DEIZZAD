@@ -99,7 +99,7 @@ public class Player extends Entity {
     public void update() {
         updateHealthBar();
 
-        if(currentHealth <= 0){
+        if(currentHealth <= 0 || hitbox.y >= 600){
             playing.setGameOver(true);
             return;
         }

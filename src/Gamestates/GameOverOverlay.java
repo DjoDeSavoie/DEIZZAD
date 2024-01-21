@@ -5,11 +5,12 @@
 
 package Gamestates;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import main.Game;
 import utilz.LoadSave;
+import java.awt.Font;
+import java.awt.Color;
 
 import java.awt.image.BufferedImage;
 
@@ -56,7 +57,14 @@ public class GameOverOverlay {
         //g.drawString("Game Over", Game.GAME_WIDTH / 2, 150);
 
         // Instructions pour retourner au menu
-        //g.drawString("Cliquez sur Echap pour retourner au Menu", Game.GAME_WIDTH / 2, 300);
+        Font boldFont = new Font(g.getFont().getName(), Font.BOLD, 18);
+        float alpha = (float) Math.random();
+
+        // Set the font and color with the random alpha value
+        g.setFont(boldFont);
+        g.setColor(new Color(255, 0, 0, (int) (255 * alpha))); // Use alpha for opacity
+        g.setFont(boldFont);
+        g.drawString("Cliquez sur Echap pour retourner au Menu", 400, 320);
         g.drawImage(img, x, y, width, height, null);
     }
 

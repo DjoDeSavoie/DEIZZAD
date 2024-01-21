@@ -9,10 +9,6 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-//import les constantes d'objets
-import static utilz.Constants.ObjectConstants.*;
-
-
 import entities.Enemy;
 import main.Game;
 import objects.Potion;

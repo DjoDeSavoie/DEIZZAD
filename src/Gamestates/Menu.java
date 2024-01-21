@@ -9,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.Color;
+import java.awt.Font;
 
 import main.Game;
 import ui.MenuButton;
@@ -71,9 +73,67 @@ public class Menu extends State implements Statemethods {
     @Override
     public void draw(Graphics g) {
         g.drawImage(backgroundImg, menuX, menuY, menuWidth, menuHeight, null);
+        
+        // Dessine les instructions de jeu
+        drawInstructions(g);
 
         for (MenuButton mb : buttons)
             mb.draw(g);
+    }
+
+    /**
+     * Ecris les instructions de jeu.
+     * @param g L'objet Graphics utilisé pour dessiner.
+     */
+    public void drawInstructions(Graphics g) {
+        Font originalFont = g.getFont();
+        Font boldFont = new Font(originalFont.getName(), Font.BOLD, 18);
+        g.setFont(boldFont);
+
+        String instructionsText = "Instructions de Déplacement :\n \n \n" +
+        "Aller à gauche : Touche gauche \n \n" +
+        "Aller à droite : Touche droite \n \n" +
+        "Frapper : Alt gauche\n\n" +
+        "Sauter : Espace\n\n" +
+        "Pause : Backspace\n \n";
+
+        // Split the text into lines
+        String[] lines = instructionsText.split("\n");
+
+        // Draw each line centered vertically
+        int startY = 200;
+        for (int i = 0; i < lines.length; i++) {
+            // Choose a different color for each line
+        switch (i) {
+            case 3: // Aller à gauche
+                g.setColor(Color.BLUE);
+                break;
+            case 5: // Aller à droite
+                g.setColor(Color.BLUE);
+                break;
+            case 7: // Frapper
+                g.setColor(Color.RED);
+                break;
+            case 9: // Sauter
+                g.setColor(Color.GREEN);
+                break;
+            case 11: // Pause
+                g.setColor(Color.BLACK);
+                break;
+            default:
+                g.setColor(Color.BLACK);
+                break;
+        }
+            // Calculate the width of each line
+            int textWidth = g.getFontMetrics().stringWidth(lines[i]);
+
+            // Draw the line centered horizontally and vertically
+            g.drawString(lines[i], (400 - textWidth) / 2, startY + i * g.getFontMetrics().getHeight());
+        }
+
+        // Restore the original font
+        g.setFont(originalFont);
+
     }
 
     /**

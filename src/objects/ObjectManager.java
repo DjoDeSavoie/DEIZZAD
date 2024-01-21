@@ -7,19 +7,11 @@ package objects;
 
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Level;
 
 import Gamestates.Playing;
 import utilz.LoadSave;
-import levels.*;
-import main.Game;
-
-import levels.*;
-import main.Game;
 
 import static utilz.Constants.ObjectConstants.*;
 

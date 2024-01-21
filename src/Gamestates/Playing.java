@@ -5,8 +5,6 @@
 
 package Gamestates;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -15,6 +13,7 @@ import entities.EnemyManager;
 import entities.Player;
 import levels.LevelManager;
 import objects.ObjectManager;
+import java.awt.Graphics;
 
 import main.Game;
 import ui.EndLevelOverlay;
@@ -47,7 +46,7 @@ public class Playing extends State implements Statemethods {
     public Playing(Game game) {
         super(game);
         initClasses();
-        calculatelvlOffset();
+        calculatelvlOffset();   
         loadStartLevel();
     }
 

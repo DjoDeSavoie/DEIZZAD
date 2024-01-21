@@ -13,11 +13,6 @@ import main.Game;
 import static utilz.Constants.ANI_SPEED;
 import static utilz.Constants.ObjectConstants.*;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
-import main.Game;
-
 public class GameObject {
     protected int x, y, objType;
     protected Rectangle2D.Float hitbox;
