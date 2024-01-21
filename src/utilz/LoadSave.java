@@ -1,10 +1,12 @@
 package utilz;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
@@ -48,39 +50,29 @@ public class LoadSave {
 
     //recupere tous les levels dans le dossier lvls
     public static BufferedImage[] GetAllLevels() {
-        //partie pour recuperer les fichiers dans le dossier
-		URL url = LoadSave.class.getResource("/data/levels/");
-		File file = null;
+        String[] levelFiles = {"1.png", "2.png", "3.png"}; // Utilisez ici les noms de fichiers que vous avez montré dans votre JAR.
+        List<BufferedImage> images = new ArrayList<>();
+    
+        for (String fileName : levelFiles) {
+            try (InputStream is = LoadSave.class.getResourceAsStream("/data/levels/" + fileName)) {
+                if (is == null) {
+                    throw new IOException("Cannot find resource: " + fileName);
+                }
+                BufferedImage img = ImageIO.read(is);
+                if (img != null) {
+                    images.add(img);
+                } else {
+                    throw new IOException("Cannot load image for resource: " + fileName);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Handle the exception here, maybe log it or re-throw as a runtime exception
+            }
+        }
+    
+        return images.toArray(new BufferedImage[0]);
+    }
+    
 
-		try {
-			file = new File(url.toURI());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-
-		File[] files = file.listFiles();
-
-        //partie pour trier les fichiers dans l'ordre
-		File[] filesSorted = new File[files.length];
-
-		for (int i = 0; i < filesSorted.length; i++)
-			for (int j = 0; j < files.length; j++) {
-				if (files[j].getName().equals((i + 1) + ".png"))
-					filesSorted[i] = files[j];
-
-			}
-
-        //partie pour charger les images        
-        BufferedImage[] imgs = new BufferedImage[filesSorted.length];
-        
-		for (int i = 0; i < imgs.length; i++)
-			try {
-				imgs[i] = ImageIO.read(filesSorted[i]);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		return imgs;
-	}
 
 }

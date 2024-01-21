@@ -56,9 +56,14 @@ public class LevelManager {
      */
     private void buildAllLevels() {
         BufferedImage[] allLevels = LoadSave.GetAllLevels();
-        for (BufferedImage img : allLevels)
+        System.out.println("Nombre de niveaux chargés: " + allLevels.length); // Ajout de log
+    
+        for (BufferedImage img : allLevels) {
             levels.add(new Level(img));
+            System.out.println("Niveau ajouté"); // Ajout de log
+        }
     }
+    
 
     /**
      * Importe les sprites du niveau.
@@ -99,8 +104,12 @@ public class LevelManager {
      * @return Le niveau actuel.
      */
     public Level getCurrentLevel(){
+        if (levels.isEmpty()) {
+            throw new IllegalStateException("Aucun niveau n'a été chargé.");
+        }
         return levels.get(currentLevel);
     }
+    
 
     /**
      * Retourne le nombre total de niveaux.
